@@ -1,0 +1,846 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh_CN.UTF-8" xml:lang="zh_CN.UTF-8">
+<head>
+<!-- 2021-12-13 Mon 15:00 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>面向恶意代码检测的对抗技术研究</title>
+<meta name="generator" content="Org mode" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<style type="text/css">
+html{font-family:sans-serif;line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0}article,aside,details,figcaption,figure,footer,header,main,menu,nav,section,summary{display:block}audio,canvas,progress,video{display:inline-block}audio:not([controls]){display:none;height:0}progress{vertical-align:baseline}[hidden],template{display:none}a{background-color:transparent;-webkit-text-decoration-skip:objects}a:active,a:hover{outline-width:0}abbr[title]{border-bottom:none;text-decoration:underline;text-decoration:underline dotted}b,strong{font-weight:inherit;font-weight:bolder}dfn{font-style:italic}h1{font-size:2em;margin:.67em 0}mark{background-color:#ff0;color:#000}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}img{border-style:none}svg:not(:root){overflow:hidden}code,kbd,pre,samp{font-family:monospace,monospace;font-size:1em}figure{margin:1em 40px}hr{box-sizing:content-box;height:0;overflow:visible}button,input,optgroup,select,textarea{font:inherit;margin:0}optgroup{font-weight:700}button,input{overflow:visible}button,select{text-transform:none}[type=reset],[type=submit],button,html [type=button]{-webkit-appearance:button}[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button::-moz-focus-inner{border-style:none;padding:0}[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring,button:-moz-focusring{outline:1px dotted ButtonText}fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}legend{box-sizing:border-box;color:inherit;display:table;max-width:100%;padding:0;white-space:normal}textarea{overflow:auto}[type=checkbox],[type=radio]{box-sizing:border-box;padding:0}[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}[type=search]::-webkit-search-cancel-button,[type=search]::-webkit-search-decoration{-webkit-appearance:none}::-webkit-input-placeholder{color:inherit;opacity:.54}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}body{color:#000;background-color:#fff}.org-alert-high{color:#ff8c00;font-weight:700}.org-alert-low{color:#00008b}.org-alert-moderate{color:gold;font-weight:700}.org-alert-saved-fringe{background-color:#f2f2f2}.org-alert-trivial{color:Dark purple}.org-alert-urgent{color:red;font-weight:700}.org-anzu-match-1{color:#000;background-color:#7fffd4}.org-anzu-match-2{color:#000;background-color:#00ff7f}.org-anzu-match-3{color:#000;background-color:#ff0}.org-anzu-mode-line,.org-anzu-mode-line-no-match{color:#008b00;font-weight:700}.org-anzu-replace-highlight{color:#b0e2ff;background-color:#cd00cd}.org-anzu-replace-to{color:red}.org-bbdb-field-name{color:sienna}.org-bbdb-name{color:#00f}.org-bbdb-organization{color:#b22222}.org-beacon-fallback-background{background-color:#000}.org-biblio-results-header{color:#483d8b;font-size:150%;font-weight:700}.org-bold{font-weight:700}.org-bold-italic{font-weight:700;font-style:italic}.org-bookmark-menu-bookmark{font-weight:700}.org-bookmark-menu-heading{color:#228b22}.org-buffer-menu-buffer{font-weight:700}.org-builtin{color:#483d8b}.org-button{color:#3a5fcd;text-decoration:underline}.org-c-annotation{color:#008b8b}.org-cal-china-x-general-holiday{background-color:#228b22}.org-cal-china-x-important-holiday{background-color:#8b0000}.org-calendar-iso-week{color:pink;font-weight:700}.org-calendar-iso-week-header{color:#0ff}.org-calendar-month-header{color:#00f}.org-calendar-today{text-decoration:underline}.org-calendar-weekday-header{color:#008b8b}.org-calendar-weekend-header{color:#b22222}.org-comint-highlight-input{font-weight:700}.org-comint-highlight-prompt{color:#0000cd}.org-comment,.org-comment-delimiter{color:#b22222}.org-compilation-column-number{color:#8b2252}.org-compilation-error{color:red;font-weight:700}.org-compilation-info{color:#228b22;font-weight:700}.org-compilation-line-number{color:#a020f0}.org-compilation-mode-line-exit{color:#228b22;font-weight:700}.org-compilation-mode-line-fail{color:red;font-weight:700}.org-compilation-mode-line-run,.org-compilation-warning{color:#ff8c00;font-weight:700}.org-completions-annotations{font-style:italic}.org-completions-first-difference{font-weight:700}.org-constant{color:#008b8b}.org-cursor{background-color:#eead0e}.org-custom-button{color:#000;background-color:#d3d3d3}.org-custom-button-mouse{color:#000;background-color:#e5e5e5}.org-custom-button-pressed{color:#000;background-color:#d3d3d3}.org-custom-button-pressed-unraised{color:#8b008b;text-decoration:underline}.org-custom-button-unraised{text-decoration:underline}.org-custom-changed{color:#fff;background-color:#00f}.org-custom-comment{background-color:#d9d9d9}.org-custom-comment-tag{color:#00008b}.org-custom-face-tag{color:#00f;font-weight:700}.org-custom-group-subtitle{font-weight:700}.org-custom-group-tag{color:#00f;font-size:120%;font-weight:700}.org-custom-group-tag-1{color:red;font-size:120%;font-weight:700}.org-custom-invalid{color:#ff0;background-color:red}.org-custom-link{color:#3a5fcd;text-decoration:underline}.org-custom-modified{color:#fff;background-color:#00f}.org-custom-rogue{color:pink;background-color:#000}.org-custom-saved{text-decoration:underline}.org-custom-set{color:#00f;background-color:#fff}.org-custom-state{color:#006400}.org-custom-themed{color:#fff;background-color:#00f}.org-custom-variable-button{font-weight:700;text-decoration:underline}.org-custom-variable-tag{color:#00f;font-weight:700}.org-custom-visibility{color:#3a5fcd;font-size:80%;text-decoration:underline}.org-diary{color:red}.org-diary-anniversary{color:#a020f0}.org-diary-time{color:sienna}.org-dired-async-failures{color:red}.org-dired-async-message{color:#ff0}.org-dired-async-mode-message{color:gold}.org-dired-directory{color:#00f}.org-dired-flagged{color:red;font-weight:700}.org-dired-header{color:#228b22}.org-dired-ignored{color:#7f7f7f}.org-dired-mark{color:#008b8b}.org-dired-marked{color:#ff8c00;font-weight:700}.org-dired-perm-write{color:#b22222}.org-dired-symlink{color:#a020f0}.org-dired-warning{color:red;font-weight:700}.org-doc{color:#8b2252}.org-eldoc-highlight-function-argument{font-weight:700}.org-epa-field-body{font-style:italic}.org-epa-field-name,.org-epa-mark{font-weight:700}.org-epa-mark{color:red}.org-epa-string{color:#00008b}.org-epa-validity-disabled{font-style:italic}.org-epa-validity-high{font-weight:700}.org-epa-validity-low,.org-epa-validity-medium{font-style:italic}.org-error{color:red;font-weight:700}.org-escape-glyph{color:brown}.org-evil-ex-commands{font-style:italic;text-decoration:underline}.org-evil-ex-info{color:red;font-style:italic}.org-evil-ex-lazy-highlight{background-color:#afeeee}.org-evil-ex-search{color:#b0e2ff;background-color:#cd00cd}.org-evil-ex-substitute-matches{background-color:#afeeee}.org-evil-ex-substitute-replacement{color:red;text-decoration:underline}.org-ffap{background-color:#b4eeb4}.org-file-name-shadow{color:#7f7f7f}.org-flycheck-error{text-decoration:underline}.org-flycheck-error-list-checker-name{color:#00f}.org-flycheck-error-list-column-number{color:#008b8b}.org-flycheck-error-list-error{color:red;font-weight:700}.org-flycheck-error-list-filename{color:sienna}.org-flycheck-error-list-highlight{background-color:#b4eeb4}.org-flycheck-error-list-id,.org-flycheck-error-list-id-with-explainer{color:#228b22}.org-flycheck-error-list-info{color:#228b22;font-weight:700}.org-flycheck-error-list-line-number{color:#008b8b}.org-flycheck-error-list-warning{color:#ff8c00;font-weight:700}.org-flycheck-fringe-error{color:red;font-weight:700}.org-flycheck-fringe-info{color:#228b22;font-weight:700}.org-flycheck-fringe-warning{color:#ff8c00;font-weight:700}.org-flycheck-info,.org-flycheck-warning,.org-flyspell-duplicate,.org-flyspell-incorrect{text-decoration:underline}.org-fringe{background-color:#f2f2f2}.org-function-name{color:#00f}.org-glyphless-char{font-size:60%}.org-golden-ratio-scroll-highlight-line{color:#fff;background-color:#53868b;font-weight:700}.org-header-line{color:#333;background-color:#e5e5e5}.org-helm-action{text-decoration:underline}.org-helm-bookmark-addressbook{color:tomato}.org-helm-bookmark-directory{color:#8b0000;background-color:#d3d3d3}.org-helm-bookmark-file{color:#00b2ee}.org-helm-bookmark-file-not-found{color:#6c7b8b}.org-helm-bookmark-gnus{color:#f0f}.org-helm-bookmark-info{color:#0f0}.org-helm-bookmark-man{color:#8b5a00}.org-helm-bookmark-w3m{color:#ff0}.org-helm-buffer-archive{color:gold}.org-helm-buffer-directory{color:#8b0000;background-color:#d3d3d3}.org-helm-buffer-file{color:#483d8b}.org-helm-buffer-modified{color:#b22222}.org-helm-buffer-not-saved{color:#ee6363}.org-helm-buffer-process{color:#cd6839}.org-helm-buffer-saved-out{color:red;background-color:#000}.org-helm-buffer-size{color:#708090}.org-helm-candidate-number,.org-helm-candidate-number-suspended{color:#000;background-color:#faffb5}.org-helm-delete-async-message{color:#ff0}.org-helm-etags-file{color:#8b814c;text-decoration:underline}.org-helm-ff-denied{color:red;background-color:#000}.org-helm-ff-directory{color:#8b0000;background-color:#d3d3d3}.org-helm-ff-dirs{color:#00f}.org-helm-ff-dotted-directory{color:#000;background-color:#696969}.org-helm-ff-dotted-symlink-directory{color:#ff8c00;background-color:#696969}.org-helm-ff-executable{color:#0f0}.org-helm-ff-file{color:#483d8b}.org-helm-ff-invalid-symlink{color:#000;background-color:red}.org-helm-ff-pipe{color:#ff0;background-color:#000}.org-helm-ff-prefix{color:#000;background-color:#ff0}.org-helm-ff-socket{color:#ff1493}.org-helm-ff-suid{color:#fff;background-color:red}.org-helm-ff-symlink{color:#b22222}.org-helm-ff-truename{color:#8b2252}.org-helm-grep-cmd-line{color:#228b22}.org-helm-grep-file{color:#8a2be2;text-decoration:underline}.org-helm-grep-finish{color:#0f0}.org-helm-grep-lineno{color:#ff7f00}.org-helm-grep-match{color:#b00000}.org-helm-header{color:#333;background-color:#e5e5e5}.org-helm-header-line-left-margin{color:#000;background-color:#ff0}.org-helm-helper{color:#333;background-color:#e5e5e5}.org-helm-history-deleted{color:#000;background-color:red}.org-helm-history-remote{color:#ff6a6a}.org-helm-lisp-completion-info{color:red}.org-helm-lisp-show-completion{background-color:#2f4f4f}.org-helm-locate-finish{color:#0f0}.org-helm-m-x-key{color:orange;text-decoration:underline}.org-helm-match{color:#b00000}.org-helm-match-item{color:#b0e2ff;background-color:#cd00cd}.org-helm-minibuffer-prompt{color:#0000cd}.org-helm-moccur-buffer{color:#00ced1;text-decoration:underline}.org-helm-non-file-buffer{font-style:italic}.org-helm-prefarg{color:red}.org-helm-resume-need-update{background-color:red}.org-helm-selection{background-color:#097209}.org-helm-selection-line{background-color:#b4eeb4}.org-helm-separator{color:#ffbfb5}.org-helm-source-header{color:#000;background-color:#abd7f0;font-size:130%;font-weight:700}.org-helm-visible-mark{background-color:#d1f5ea}.org-help-argument-name{font-style:italic}.org-highlight{background-color:#b4eeb4}.org-highlight-indent-guides-character{color:#e6e6e6}.org-highlight-indent-guides-even{background-color:#e6e6e6}.org-highlight-indent-guides-odd{background-color:#f3f3f3}.org-highlight-indent-guides-stack-character{color:#ccc}.org-highlight-indent-guides-stack-even{background-color:#ccc}.org-highlight-indent-guides-stack-odd{background-color:#d9d9d9}.org-highlight-indent-guides-top-character{color:#b3b3b3}.org-highlight-indent-guides-top-even{background-color:#b3b3b3}.org-highlight-indent-guides-top-odd{background-color:silver}.org-highlight-numbers-number{color:#008b8b}.org-hl-line{background-color:#b4eeb4}.org-holiday{background-color:pink}.org-hydra-face-amaranth{color:#e52b50;font-weight:700}.org-hydra-face-blue{color:#00f;font-weight:700}.org-hydra-face-pink{color:#ff6eb4;font-weight:700}.org-hydra-face-red{color:red;font-weight:700}.org-hydra-face-teal{color:#367588;font-weight:700}.org-ido-first-match{font-weight:700}.org-ido-incomplete-regexp{color:red;font-weight:700}.org-ido-indicator{color:#ff0;background-color:red}.org-ido-only-match{color:#228b22}.org-ido-subdir{color:red}.org-ido-virtual{color:#483d8b}.org-info-header-node{color:brown;font-weight:700;font-style:italic}.org-info-header-xref{color:#3a5fcd;text-decoration:underline}.org-info-index-match{background-color:#ff0}.org-info-menu-header{font-weight:700}.org-info-menu-star{color:red}.org-info-node{color:brown;font-weight:700;font-style:italic}.org-info-title-1{font-size:172%;font-weight:700}.org-info-title-2{font-size:144%;font-weight:700}.org-info-title-3{font-size:120%;font-weight:700}.org-info-title-4{font-weight:700}.org-info-xref{color:#3a5fcd;text-decoration:underline}.org-isearch{color:#b0e2ff;background-color:#cd00cd}.org-isearch-fail{background-color:#ffc1c1}.org-italic{font-style:italic}.org-keyword{color:#a020f0}.org-lazy-highlight{background-color:#afeeee}.org-link{color:#3a5fcd;text-decoration:underline}.org-link-visited{color:#8b008b;text-decoration:underline}.org-lv-separator{background-color:#ccc}.org-match{background-color:#ff0}.org-mcXcursor-bar{background-color:#000}.org-mcXregion{background-color:gtk_selection_bg_color}.org-me-dired-dim-0{color:#b3b3b3}.org-me-dired-dim-1{color:#7f7f7f}.org-me-dired-executable{color:#0f0}.org-message-cited-text{color:red}.org-message-header-cc{color:#191970}.org-message-header-name{color:#6495ed}.org-message-header-newsgroups{color:#00008b;font-weight:700;font-style:italic}.org-message-header-other{color:#4682b4}.org-message-header-subject{color:navy;font-weight:700}.org-message-header-to{color:#191970;font-weight:700}.org-message-header-xheader{color:#00f}.org-message-mml{color:#228b22}.org-message-separator{color:brown}.org-minibuffer-prompt{color:#0000cd}.org-mm-command-output{color:#cd0000}.org-mode-line{color:#000;background-color:#bfbfbf}.org-mode-line-buffer-id,.org-mode-line-buffer-id-inactive,.org-mode-line-emphasis{font-weight:700}.org-mode-line-inactive{color:#333;background-color:#e5e5e5}.org-mu4e-attach-number{color:sienna;font-weight:700}.org-mu4e-cited-1{color:#483d8b;font-style:italic}.org-mu4e-cited-2{color:#5cacee;font-style:italic}.org-mu4e-cited-3{color:sienna;font-style:italic}.org-mu4e-cited-4{color:#a020f0;font-style:italic}.org-mu4e-cited-5,.org-mu4e-cited-6{color:#b22222;font-style:italic}.org-mu4e-cited-7{color:#228b22;font-style:italic}.org-mu4e-compose-header,.org-mu4e-compose-separator{color:brown;font-style:italic}.org-mu4e-contact{color:sienna}.org-mu4e-context{color:#006400;font-weight:700}.org-mu4e-draft{color:#8b2252}.org-mu4e-flagged{color:#008b8b;font-weight:700}.org-mu4e-footer{color:#b22222}.org-mu4e-forwarded{color:#483d8b}.org-mu4e-header{color:#000;background-color:#fff}.org-mu4e-header-highlight{background-color:#000;font-weight:700;text-decoration:underline}.org-mu4e-header-key{color:#6495ed;font-weight:700}.org-mu4e-header-marks{color:#483d8b}.org-mu4e-header-title,.org-mu4e-header-value{color:#228b22}.org-mu4e-highlight{background-color:#b4eeb4}.org-mu4e-link{color:#3a5fcd;text-decoration:underline}.org-mu4e-modeline{color:#8b4500;font-weight:700}.org-mu4e-moved{color:#b22222;font-style:italic}.org-mu4e-ok{color:#b22222;font-weight:700}.org-mu4e-region-code{background-color:#2f4f4f}.org-mu4e-replied,.org-mu4e-special-header-value{color:#483d8b}.org-mu4e-system{color:#b22222;font-style:italic}.org-mu4e-title{color:#228b22;font-weight:700}.org-mu4e-trashed{color:#b22222;text-decoration:line-through}.org-mu4e-unread{color:#a020f0;font-weight:700}.org-mu4e-url-number{color:#008b8b;font-weight:700}.org-mu4e-view-body{color:#000;background-color:#fff}.org-mu4e-warning{color:red;font-weight:700}.org-next-error{background-color:gtk_selection_bg_color}.org-nobreak-space{color:brown;text-decoration:underline}.org-org-agenda-calendar-event,.org-org-agenda-calendar-sexp{color:#000;background-color:#fff}.org-org-agenda-clocking{background-color:#ff0}.org-org-agenda-column-dateline{background-color:#e5e5e5}.org-org-agenda-current-time{color:#b8860b}.org-org-agenda-date{color:#00f}.org-org-agenda-date-today{color:#00f;font-weight:700;font-style:italic}.org-org-agenda-date-weekend{color:#00f;font-weight:700}.org-org-agenda-diary{color:#000;background-color:#fff}.org-org-agenda-dimmed-todo{color:#7f7f7f}.org-org-agenda-done{color:#228b22}.org-org-agenda-filter-category,.org-org-agenda-filter-effort,.org-org-agenda-filter-regexp,.org-org-agenda-filter-tags{color:#000;background-color:#bfbfbf}.org-org-agenda-restriction-lock{background-color:#eee}.org-org-agenda-structure{color:#00f}.org-org-archived{color:#7f7f7f}.org-org-block{color:#7f7f7f}.org-org-block-begin-line,.org-org-block-end-line{color:#b22222}.org-org-checkbox{font-weight:700}.org-org-checkbox-statistics-done{color:#228b22;font-weight:700}.org-org-checkbox-statistics-todo{color:red;font-weight:700}.org-org-clock-overlay{color:#000;background-color:#d3d3d3}.org-org-code{color:#7f7f7f}.org-org-column,.org-org-column-title{background-color:#e5e5e5}.org-org-column-title{font-weight:700;text-decoration:underline}.org-org-date{color:#bfaf87;text-decoration:underline}.org-org-date-selected{color:red}.org-org-default{color:#000;background-color:#fff}.org-org-document-info{color:#191970}.org-org-document-info-keyword{color:#7f7f7f}.org-org-document-title{color:#191970;font-weight:700}.org-org-done{color:#228b22;font-weight:700}.org-org-drawer{color:#00f}.org-org-ellipsis{color:#b8860b;text-decoration:underline}.org-org-footnote{color:#96b4cd;text-decoration:underline}.org-org-formula{color:#b22222}.org-org-habit-alert{background-color:#f5f946}.org-org-habit-alert-future{background-color:#fafca9}.org-org-habit-clear{background-color:#8270f9}.org-org-habit-clear-future{background-color:#d6e4fc}.org-org-habit-overdue{background-color:#f9372d}.org-org-habit-overdue-future{background-color:#fc9590}.org-org-habit-ready{background-color:#4df946}.org-org-habit-ready-future{background-color:#acfca9}.org-org-headline-done{color:#bc8f8f}.org-org-hide{color:#fff}.org-org-latex-and-related{color:#8b4513}.org-org-level-1{color:#edd1c5}.org-org-level-2{color:#ebebb7}.org-org-level-3{color:#cce8cc}.org-org-level-4{color:#c9deec}.org-org-level-5{color:#dce3e8}.org-org-level-6{color:#dde6dd}.org-org-level-7{color:#e8e8ce}.org-org-level-8{color:#e8dedb}.org-org-link{color:#c5d2dc;text-decoration:underline}.org-org-list-dt{font-weight:700}.org-org-macro{color:#8b4513}.org-org-meta-line{color:#b22222}.org-org-mode-line-clock{color:#000;background-color:#bfbfbf}.org-org-mode-line-clock-overrun{color:#000;background-color:red}.org-org-priority{color:#a020f0}.org-org-quote{color:#7f7f7f}.org-org-ref-acronym{color:#ee7600;text-decoration:underline}.org-org-ref-cite{color:#c3d5c3;text-decoration:underline}.org-org-ref-glossary{color:#8968cd;text-decoration:underline}.org-org-ref-label{color:#8b008b;text-decoration:underline}.org-org-ref-ref{color:#e1cc96;text-decoration:underline}.org-org-scheduled{color:#006400}.org-org-scheduled-previously{color:#b22222}.org-org-scheduled-today{color:#006400}.org-org-sexp-date{color:#a020f0}.org-org-special-keyword{color:#88949f}.org-org-table{color:#00f}.org-org-tag,.org-org-tag-group{font-weight:700}.org-org-target{text-decoration:underline}.org-org-time-grid{color:#b8860b}.org-org-todo{color:red;font-weight:700}.org-org-upcoming-deadline{color:#b22222}.org-org-verbatim,.org-org-verse{color:#7f7f7f}.org-org-warning{color:red;font-weight:700}.org-outline-1{color:#00f}.org-outline-2{color:sienna}.org-outline-3{color:#a020f0}.org-outline-4{color:#b22222}.org-outline-5{color:#228b22}.org-outline-6{color:#008b8b}.org-outline-7{color:#483d8b}.org-outline-8{color:#8b2252}.org-package-description{color:#000;background-color:#fff}.org-package-name{color:#3a5fcd;text-decoration:underline}.org-package-status-avail-obso{color:#b22222}.org-package-status-available{color:#000;background-color:#fff}.org-package-status-built-in{color:#483d8b}.org-package-status-dependency{color:#b22222}.org-package-status-disabled{color:red;font-weight:700}.org-package-status-external{color:#483d8b}.org-package-status-held{color:#008b8b}.org-package-status-incompat,.org-package-status-installed{color:#b22222}.org-package-status-unsigned{color:red;font-weight:700}.org-pdf-isearch-batch{background-color:#ff0}.org-pdf-isearch-lazy{background-color:#afeeee}.org-pdf-isearch-match{color:#b0e2ff;background-color:#cd00cd}.org-pdf-occur-document{color:#8b2252}.org-pdf-occur-page{color:#228b22}.org-pdf-view-rectangle{background-color:#b4eeb4}.org-pdf-view-region{background-color:gtk_selection_bg_color}.org-powerline-active0{color:#000;background-color:#bfbfbf}.org-powerline-active1{color:#fff;background-color:#2b2b2b}.org-powerline-active2{color:#fff;background-color:#666}.org-powerline-inactive0{color:#333;background-color:#e5e5e5}.org-powerline-inactive1{color:#333;background-color:#1c1c1c}.org-powerline-inactive2{color:#333;background-color:#333}.org-preprocessor{color:#483d8b}.org-query-replace{color:#b0e2ff;background-color:#cd00cd}.org-rainbow-delimiters-depth-1{color:#ffdead}.org-rainbow-delimiters-depth-2{color:#00bfff}.org-rainbow-delimiters-depth-3{color:#ffdead}.org-rainbow-delimiters-depth-4{color:#00bfff}.org-rainbow-delimiters-depth-5{color:#ffdead}.org-rainbow-delimiters-depth-6{color:#00bfff}.org-rainbow-delimiters-depth-7{color:#ffdead}.org-rainbow-delimiters-depth-8{color:#00bfff}.org-rainbow-delimiters-depth-9{color:#ffdead}.org-rainbow-delimiters-unmatched{color:#88090b}.org-reb-match-0{background-color:#add8e6}.org-reb-match-1{background-color:#7fffd4}.org-reb-match-2{background-color:#00ff7f}.org-reb-match-3{background-color:#ff0}.org-rectangle-preview{background-color:gtk_selection_bg_color}.org-regexp-grouping-backslash,.org-regexp-grouping-construct{font-weight:700}.org-region{background-color:gtk_selection_bg_color}.org-secondary-selection{background-color:#ff0}.org-semantic-highlight-edits,.org-semantic-highlight-func-current-tag{background-color:#e5e5e5}.org-semantic-unmatched-syntax{text-decoration:underline}.org-sgml-namespace{color:#483d8b}.org-sh-escaped-newline{color:#8b2252}.org-sh-heredoc{color:#ee0}.org-sh-quoted-exec{color:#f0f}.org-shadow{color:#7f7f7f}.org-show-paren-match{background-color:#40e0d0}.org-show-paren-mismatch{color:#fff;background-color:#a020f0}.org-sp-pair-overlay,.org-sp-show-pair-enclosing{background-color:#b4eeb4}.org-sp-show-pair-match{background-color:#40e0d0}.org-sp-show-pair-mismatch{color:#fff;background-color:#a020f0}.org-sp-wrap-overlay{background-color:#b4eeb4}.org-sp-wrap-overlay-closing-pair{color:red;background-color:#b4eeb4}.org-sp-wrap-overlay-opening-pair{color:#0f0;background-color:#b4eeb4}.org-sp-wrap-tag-overlay{background-color:#b4eeb4}.org-spaceline-flycheck-error{color:#fc5c94;background-color:#333}.org-spaceline-flycheck-info{color:#8de6f7;background-color:#333}.org-spaceline-flycheck-warning{color:#f3ea98;background-color:#333}.org-spaceline-python-venv{color:#fbf}.org-speedbar-button{color:#008b00}.org-speedbar-directory{color:#00008b}.org-speedbar-file{color:#008b8b}.org-speedbar-highlight{background-color:#0f0}.org-speedbar-selected{color:red;text-decoration:underline}.org-speedbar-separator{color:#fff;background-color:#00f;text-decoration:overline}.org-speedbar-tag{color:brown}.org-string{color:#8b2252}.org-success{color:#228b22;font-weight:700}.org-table-cell{color:#e5e5e5;background-color:#00f}.org-tex-math{color:#8b2252}.org-tool-bar{color:#000;background-color:#bfbfbf}.org-tooltip{color:#000;background-color:#ffffe0}.org-trailing-whitespace{background-color:red}.org-tty-menu-disabled{color:#d3d3d3;background-color:#00f}.org-tty-menu-enabled{color:#ff0;background-color:#00f;font-weight:700}.org-tty-menu-selected{background-color:red}.org-type{color:#228b22}.org-underline{text-decoration:underline}.org-undo-tree-visualizer-active-branch{color:#000;font-weight:700}.org-undo-tree-visualizer-current{color:red}.org-undo-tree-visualizer-default{color:#bebebe}.org-undo-tree-visualizer-register{color:#ff0}.org-undo-tree-visualizer-unmodified{color:#0ff}.org-variable-name{color:sienna}.org-vhlXdefault{background-color:#ff0}.org-warning{color:#ff8c00;font-weight:700}.org-warning-1{color:red;font-weight:700}.org-wgrep{color:#fff;background-color:#228b22}.org-wgrep-delete{color:pink;background-color:#228b22}.org-wgrep-done{color:#00f}.org-wgrep-file{color:#fff;background-color:#228b22}.org-wgrep-reject{color:red;font-weight:700}.org-which-key-command-description{color:#00f}.org-which-key-docstring{color:#b22222}.org-which-key-group-description{color:#a020f0}.org-which-key-highlighted-command{color:#00f;text-decoration:underline}.org-which-key-key{color:#008b8b}.org-which-key-local-map-description{color:#00f}.org-which-key-note,.org-which-key-separator{color:#b22222}.org-which-key-special-key{color:#008b8b;font-weight:700}.org-whitespace-big-indent{color:#b22222;background-color:red}.org-whitespace-empty{color:#b22222;background-color:#ff0}.org-whitespace-hspace{color:#d3d3d3;background-color:#cdc9a5}.org-whitespace-indentation{color:#b22222;background-color:#ff0}.org-whitespace-line{color:violet;background-color:#333}.org-whitespace-newline{color:#d3d3d3}.org-whitespace-space{color:#d3d3d3;background-color:#ffffe0}.org-whitespace-space-after-tab{color:#b22222;background-color:#ff0}.org-whitespace-space-before-tab{color:#b22222;background-color:#ff8c00}.org-whitespace-tab{color:#d3d3d3;background-color:beige}.org-whitespace-trailing{color:#ff0;background-color:red;font-weight:700}.org-widget-button{font-weight:700}.org-widget-button-pressed{color:red}.org-widget-documentation{color:#006400}.org-widget-field{background-color:#d9d9d9}.org-widget-inactive{color:#7f7f7f}.org-widget-single-line-field{background-color:#d9d9d9}.org-window-divider{color:#999}.org-window-divider-first-pixel{color:#ccc}.org-window-divider-last-pixel{color:#666}a{color:inherit;background-color:inherit;font:inherit;text-decoration:inherit}a:hover{text-decoration:underline}body{width:95%;margin:2% auto;font-size:14px;line-height:1.4em;font-family:Georgia,serif;color:#333}@media screen and (min-width:600px){body{font-size:18px}}@media screen and (min-width:910px){body{width:900px}}::selection{background:#d6edff}p{margin:1em auto}dl,ol,ul{margin:0 auto}.title{text-align:center;margin:.8em auto;color:#000}.subtitle{text-align:center;font-size:1.1em;line-height:1.4;font-weight:700;margin:1em auto}.abstract{margin:auto;width:80%;font-style:italic}.abstract p:last-of-type:before{content:"    ";white-space:pre}.status{font-size:90%;margin:2em auto}[class^=section-number-]{margin-right:.5em}[id^=orgheadline]{clear:both}#footnotes{font-size:90%}.footpara{display:inline;margin:.2em auto}.footdef{margin-bottom:1em}.footdef sup{padding-right:.5em}a{color:#527d9a;text-decoration:none}a:hover{color:#035;border-bottom:1px dotted}figure{padding:0;margin:1em auto;text-align:center}img{max-width:100%;vertical-align:middle}.MathJax_Display{margin:0!important;width:90%!important}h1,h2,h3,h4,h5,h6{color:#a5573e;line-height:1em;font-family:Helvetica,sans-serif}h1,h2,h3{line-height:1.4em}h4,h5,h6{font-size:1em}@media screen and (min-width:600px){h1{font-size:2em}h2{font-size:1.5em}h3{font-size:1.3em}h1,h2,h3{line-height:1.4em}h4,h5,h6{font-size:1.1em}}dt{font-weight:700}table{margin:1em auto;border-top:2px solid;border-bottom:2px solid;border-collapse:collapse}thead{border-bottom:2px solid}table td+td,table th+th{border-left:1px solid grey}table tr{border-top:1px solid #d3d3d3}td,th{padding:.3em .6em;vertical-align:middle}caption.t-above{caption-side:top}caption.t-bottom{caption-side:bottom}caption{margin-bottom:.3em}figcaption{margin-top:.3em}th.org-center,th.org-left,th.org-right{text-align:center}td.org-right{text-align:right}td.org-left{text-align:left}td.org-center{text-align:center}blockquote{margin:1em 2em;padding-left:1em;border-left:3px solid #ccc}kbd{background-color:#f7f7f7;font-size:80%;margin:0 .1em;padding:.1em .6em}.todo{background-color:red;color:#fff;padding:.1em .3em;border-radius:3px;background-clip:padding-box;font-size:80%;font-family:Lucida Console,monospace;line-height:1}.done{background-color:green;color:#fff;padding:.1em .3em;border-radius:3px;background-clip:padding-box;font-size:80%;font-family:Lucida Console,monospace;line-height:1}.priority{color:orange;font-family:Lucida Console,monospace}#table-of-contents li{clear:both}.tag{font-family:Lucida Console,monospace;font-size:.7em;font-weight:400}.tag span{padding:.3em;float:right;margin-right:.5em;border:1px solid #bbb;border-radius:3px;background-clip:padding-box;color:#333;background-color:#eee;line-height:1}.timestamp{color:#bebebe;font-size:90%}.timestamp-kwd{color:#5f9ea0}.org-right{margin-left:auto;margin-right:0;text-align:right}.org-left{margin-left:0;margin-right:auto;text-align:left}.org-center{margin-left:auto;margin-right:auto;text-align:center}.underline{text-decoration:underline}#postamble p,#preamble p{font-size:90%;margin:.2em}p.verse{margin-left:3%}:not(pre)>code{padding:2px 5px;margin:auto 1px;border:1px solid #ddd;border-radius:3px;background-clip:padding-box;color:#333;font-size:80%}.org-src-container{border:1px solid #ccc;box-shadow:3px 3px 3px #eee;font-family:Lucida Console,monospace;font-size:80%;margin:1em auto;padding:.1em .5em;position:relative}.org-src-container>pre{overflow:auto}.org-src-container>pre:before{display:block;position:absolute;background-color:#b3b3b3;top:0;right:0;padding:0 .5em;border-bottom-left-radius:8px;border:0;color:#fff;font-size:80%}.org-src-container>pre.src-sh:before{content:"sh"}.org-src-container>pre.src-bash:before{content:"bash"}.org-src-container>pre.src-emacs-lisp:before{content:"Emacs Lisp"}.org-src-container>pre.src-R:before{content:"R"}.org-src-container>pre.src-cpp:before{content:"C++"}.org-src-container>pre.src-c:before{content:"C"}.org-src-container>pre.src-html:before{content:"HTML"}.org-src-container>pre.src-javascript:before,.org-src-container>pre.src-js:before{content:"Javascript"}// More languages 0% http://orgmode.org/worg/org-contrib/babel/languages.html .org-src-container>pre.src-abc:before{content:"ABC"}.org-src-container>pre.src-asymptote:before{content:"Asymptote"}.org-src-container>pre.src-awk:before{content:"Awk"}.org-src-container>pre.src-C:before{content:"C"}.org-src-container>pre.src-calc:before{content:"Calc"}.org-src-container>pre.src-clojure:before{content:"Clojure"}.org-src-container>pre.src-comint:before{content:"comint"}.org-src-container>pre.src-css:before{content:"CSS"}.org-src-container>pre.src-D:before{content:"D"}.org-src-container>pre.src-ditaa:before{content:"Ditaa"}.org-src-container>pre.src-dot:before{content:"Dot"}.org-src-container>pre.src-ebnf:before{content:"ebnf"}.org-src-container>pre.src-forth:before{content:"Forth"}.org-src-container>pre.src-F90:before{content:"Fortran"}.org-src-container>pre.src-gnuplot:before{content:"Gnuplot"}.org-src-container>pre.src-haskell:before{content:"Haskell"}.org-src-container>pre.src-io:before{content:"Io"}.org-src-container>pre.src-java:before{content:"Java"}.org-src-container>pre.src-latex:before{content:"LaTeX"}.org-src-container>pre.src-ledger:before{content:"Ledger"}.org-src-container>pre.src-ly:before{content:"Lilypond"}.org-src-container>pre.src-lisp:before{content:"Lisp"}.org-src-container>pre.src-makefile:before{content:"Make"}.org-src-container>pre.src-matlab:before{content:"Matlab"}.org-src-container>pre.src-max:before{content:"Maxima"}.org-src-container>pre.src-mscgen:before{content:"Mscgen"}.org-src-container>pre.src-Caml:before{content:"Objective"}.org-src-container>pre.src-octave:before{content:"Octave"}.org-src-container>pre.src-org:before{content:"Org"}.org-src-container>pre.src-perl:before{content:"Perl"}.org-src-container>pre.src-picolisp:before{content:"Picolisp"}.org-src-container>pre.src-plantuml:before{content:"PlantUML"}.org-src-container>pre.src-python:before{content:"Python"}.org-src-container>pre.src-ruby:before{content:"Ruby"}.org-src-container>pre.src-sass:before{content:"Sass"}.org-src-container>pre.src-scala:before{content:"Scala"}.org-src-container>pre.src-scheme:before{content:"Scheme"}.org-src-container>pre.src-screen:before{content:"Screen"}.org-src-container>pre.src-sed:before{content:"Sed"}.org-src-container>pre.src-shell:before{content:"shell"}.org-src-container>pre.src-shen:before{content:"Shen"}.org-src-container>pre.src-sql:before{content:"SQL"}.org-src-container>pre.src-sqlite:before{content:"SQLite"}.org-src-container>pre.src-stan:before{content:"Stan"}.org-src-container>pre.src-vala:before{content:"Vala"}.org-src-container>pre.src-axiom:before{content:"Axiom"}.org-src-container>pre.src-browser:before{content:"HTML"}.org-src-container>pre.src-cypher:before{content:"Neo4j"}.org-src-container>pre.src-elixir:before{content:"Elixir"}.org-src-container>pre.src-request:before{content:"http"}.org-src-container>pre.src-ipython:before{content:"iPython"}.org-src-container>pre.src-kotlin:before{content:"Kotlin"}.org-src-container>pre.src-Flavored Erlang lfe:before{content:"Lisp"}.org-src-container>pre.src-mongo:before{content:"MongoDB"}.org-src-container>pre.src-prolog:before{content:"Prolog"}.org-src-container>pre.src-rec:before{content:"rec"}.org-src-container>pre.src-ML sml:before{content:"Standard"}.org-src-container>pre.src-Translate translate:before{content:"Google"}.org-src-container>pre.src-typescript:before{content:"Typescript"}.org-src-container>pre.src-rust:before{content:"Rust"}.inlinetask{background:#ffc;border:2px solid grey;margin:10px;padding:10px}#org-div-home-and-up{font-size:70%;text-align:right;white-space:nowrap}.linenr{font-size:90%}.code-highlighted{background-color:#ff0}#bibliography{font-size:90%}#bibliography table{width:100%}.creator{display:block}@media screen and (min-width:600px){.creator{display:inline;float:right}}
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">面向恶意代码检测的对抗技术研究</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orge353952">1. 立题依据</a>
+<ul>
+<li><a href="#orga6ef6be">1.1. 研究目的和意义</a></li>
+<li><a href="#orgf6c6154">1.2. 国内外发展现状</a>
+<ul>
+<li><a href="#org5d8416a">1.2.1. 恶意代码分析</a></li>
+<li><a href="#org02088e0">1.2.2. 恶意代码分析对抗技术</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org5eb0acd">2. 研究内容和目标</a>
+<ul>
+<li><a href="#org21ded21">2.1. 具体研究内容</a>
+<ul>
+<li><a href="#org68c81c1">2.1.1. 面向恶意代码对抗技术的PE文件动态行为一致改写方法研究</a></li>
+<li><a href="#org9246441">2.1.2. 面向恶意代码黑盒检测的对抗攻击方法研究</a></li>
+<li><a href="#org30e9e1a">2.1.3. 面向对抗攻击的检测模型研究</a></li>
+</ul>
+</li>
+<li><a href="#org204bf75">2.2. 研究目标</a></li>
+<li><a href="#org746ec05">2.3. 拟解决的关键科学问题</a></li>
+</ul>
+</li>
+<li><a href="#org7057e9e">3. 研究方案设计及可行性分析</a>
+<ul>
+<li><a href="#orgbbb85ac">3.1. 研究方法</a></li>
+<li><a href="#orgc73083d">3.2. 技术路线</a></li>
+<li><a href="#orge79bec8">3.3. 技术方法</a>
+<ul>
+<li><a href="#org35aacb7">3.3.1. 面向恶意代码对抗技术的PE文件动态行为一致改写方法研究</a></li>
+<li><a href="#orgeeb5bf3">3.3.2. 面向恶意代码黑盒检测的对抗攻击方法研究</a></li>
+<li><a href="#org4f6ac23">3.3.3. 面向对抗攻击的检测模型研究</a></li>
+</ul>
+</li>
+<li><a href="#org2887ebf">3.4. 可行性分析</a></li>
+</ul>
+</li>
+<li><a href="#org537ba2f">4. 本研究课题可能的创新之处</a></li>
+<li><a href="#org83ba5e9">5. 研究基础与工作条件</a>
+<ul>
+<li><a href="#orga33dfb3">5.1. 与本课题相关的研究工作积累工作</a></li>
+<li><a href="#orgc6aeeda">5.2. 个人知识积累</a></li>
+<li><a href="#org06057f3">5.3. 硬件设备</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orge353952" class="outline-2">
+<h2 id="orge353952"><span class="section-number-2">1</span> 立题依据</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-orga6ef6be" class="outline-3">
+<h3 id="orga6ef6be"><span class="section-number-3">1.1</span> 研究目的和意义</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+<a id="org65f2479"></a>
+</p>
+
+<p>
+根据CNNIC于2021年发布的《中国互联网发展报告2021》[<a href="#citeproc_bib_item_16">16</a>],2021年我国个人互联网应用呈持续稳定增长态势，其中，网上外卖，在线医疗和在线办公的用户规模增长最为
+显著，其增长率都在10%以上，截至2021年6月，我国即时通信用户规模达9.83亿，较去年12月增长218万，搜索引擎用户规模达7.95亿，较去年12月增长2567万，网络
+新闻用户规模占7.60亿，增长1712万，在线办公用户规模达3.81亿，增长3506万，从以上数据可以看出，我国互联网普及率较高,接入用户已成一定规模。
+</p>
+
+<p>
+<a id="org3529448"></a>
+一方面,互联网终端的使用者隐私信息越来越多,用户习惯将一些个人信息信息存在电子设备中,包括照片,通信录,聊天记录,甚至密码等; 另一方面,互联网在带给人们便利
+的同时,也带来了极大的安全隐患, 多种多样的网络攻击威胁用户的信息安全,甚至社会治安,而恶意代码泛滥就是其中最为严重的威胁之一。
+</p>
+
+<p>
+恶意代码,也被称为恶意软件,包括蠕虫,病毒,木马,勒索软件等,它们以破坏系统完整性,可用性或者绕过目标系统的安全策略为目标,通常会造成目标系统的信息泄漏
+或资源滥用,严重时还会造成硬件级别的系统损坏,各种智能系统都面临着恶意代码攻击的问题,从个人手机到PC,都是恶意代码攻击的目标,其中Windows平台的恶意软件
+规模最为显著,Windows系统因其巨大的市场,广泛的使用规模,以及经常频发的漏洞攻击,成为恶意代码制作者偏爱的目标,而大量管理混乱,审核机制不健全的应用安装方式
+也为恶意软件的上传,传播和下载提供了方便的渠道。
+</p>
+
+<p>
+<a id="org491b5f8"></a>
+针对恶意代码迅速增长的现状,为了保护互联网终端用户的信息安全,防止用户系统,信息以及资产不受恶意代码的破坏,学界和工业界针对恶意代码都展开了广泛的研究,
+传统的恶意代码分析技术主要包括静态分析和动态分析,而近年来,为了适应恶意代码的大规模爆发,而传统检测方法具有明显不足的现状,日渐成熟的深度学习方法也被
+引入到恶意代码分析领域之中并取得了很好的效果。
+</p>
+
+<p>
+<a id="org70c4352"></a>
+然而,由于深度学习模型的不可解释性, Christian Szegedy提出了深度学习中对抗样本[<a href="#citeproc_bib_item_6">6</a>], 他们发现包括CNN在内的深度学习模型对于对抗
+样本具有极高的脆弱性.通过在原样本中添加特意构造的噪声,就能实现对深度学习模型的欺骗,后续研究也指出这样的对抗样本在其他机器学习模型中同样存在,这表明
+基于机器学习的恶意代码检测器是可以通过构造对抗样本进行绕过的,研究针对恶意代码分析的对抗攻击技术即可以提高恶意代码检测器的鲁棒性,进行抵抗对抗样本的攻击,
+也有利于机器学习在恶意代码检测领域的进步。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf6c6154" class="outline-3">
+<h3 id="orgf6c6154"><span class="section-number-3">1.2</span> 国内外发展现状</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+安全领域,攻防双方都在不断提升自己的能力,攻击者会从防御方的角度出发,针对检测系统研究绕过方法,而防御方会针对攻击者的攻击和绕过手段进行更进一步的分析,
+设计更健全的检测方案。
+</p>
+</div>
+
+<div id="outline-container-org5d8416a" class="outline-4">
+<h4 id="org5d8416a"><span class="section-number-4">1.2.1</span> 恶意代码分析</h4>
+<div class="outline-text-4" id="text-1-2-1">
+<p>
+恶意代码分析主要分为恶意代码检测和恶意代码家族分类,恶意代码检测是一个二分类问题,其目的是为了判别对应样本是否是恶意代码,而恶意代码家族分类则是在
+判定样本属于恶意样本的基础上,再进一步对恶意代码的所属家族进行研判,从而有效进行同源分析。
+</p>
+
+<p>
+恶意代码分析根据是否需要动态执行样本可以分为静态分析和动态分析,静态分析不需要实际执行代码,通过分析恶意代码文件本身,解析其结构或者关键字段并对其
+进行分析,动态分析需要在沙箱中实际执行该程序,从而收集程序执行过程中的动态信息,包括API调用,文件操作,以及其他系统资源操作等。
+</p>
+
+<p>
+而根据恶意代码分析模型的输入形式可以分为基于文件结构的方法, 基于图像的方法,基于序列的方法, 基于图的方法以及基于多特征的方法。
+</p>
+
+<p>
+<a id="org3be755a"></a>
+文献[<a href="#citeproc_bib_item_12">12</a>] 从图像的角度入手,将恶意代码的二进制数据按每8bit转换成0-255之间的灰度值,从而将恶意代码本身转化成为灰度图, 根据不同文件大小
+设定不同尺寸的图像宽度,并用GIST方法计算灰度图的纹理特征对恶意代码进行分类, 在作者收集的25类家族9458个样本上达到了98%的准确率；
+文献[<a href="#citeproc_bib_item_8">8</a>] 从恶意代码的bytes文件和asm文件两方面入手, 将bytes文件分别转为为十进制的数值矩阵, 将bytes文件和asm文件通过CBOW模型转化为
+对应的word vector,构建word vector矩阵,从而形成三通道图像,再利用ResNet+LSTM+Attention的网络结构进行恶意代码检测,在微软的BIG2015数据集上达到了98.3%
+的正确率和F1 Score; 
+<a id="orgd8be857"></a>
+文献[<a href="#citeproc_bib_item_3">3</a>] 从恶意代码的API调用序列入手, 通过对生物信息学上的序列比对算法进行改进, 对恶意代码进行有效分类, 达到了99.03%的正确率;
+<a id="orgb453d49"></a>
+文献[<a href="#citeproc_bib_item_4">4</a>] 通过构建函数和系统资源之间的依赖关系,包括API与系统资源,API与API,系统资源与系统资源等总共4种关系, 利用得到的图作为恶意代码
+检测算法的输入, 在恶意代码检测任务上取得了98%的正确率;
+文献[<a href="#citeproc_bib_item_15">15</a>] 从恶意代码的函数依赖图入手,通过将IDA导出的GDL文件转化为位图,再利用CNN进行恶意代码分类;
+文献[<a href="#citeproc_bib_item_14">14</a>] 从恶意代码的函数依赖图的角度入手, 通过将图进行切割, 并通过频繁子图的方式定义恶意代码家族基因, 从而实现同源性分析;
+<a id="org18758b4"></a>
+文献[<a href="#citeproc_bib_item_5">5</a>] 从API序列, Byte以及Opcode序列多种特征进行特征融合, 从而提升模型性能, 达到了99.7%的正确率。
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org02088e0" class="outline-4">
+<h4 id="org02088e0"><span class="section-number-4">1.2.2</span> 恶意代码分析对抗技术</h4>
+<div class="outline-text-4" id="text-1-2-2">
+<p>
+恶意代码分析对抗主要根据深度学习模型的脆弱性, 通过在原样本上添加扰动, 从而影响检测器的判别, 通过刻意地构造绕动, 可以让目标检测器实现误判, 对于
+恶意代码检测而言, 能实现恶意代码的检测绕过, 从而实现有效攻击。
+</p>
+
+<p>
+恶意代码检测对抗一般是针对某一个或者一类具体的检测模型进行对抗样本构造, 根据是否能获取目标模型的具体参数和网络结构分为白盒攻击和黑盒攻击, 白盒攻击
+能够实时获取到目标模型的梯度反馈, 而黑盒攻击则无法获取梯度反馈, 因此黑盒攻击相对白盒攻击成功率更低, 要求更高。
+</p>
+
+<p>
+不同于图像领域的生成对抗, 恶意代码的特征往往是二值的, 并且为了保持恶意代码功能的完整性, 在对抗样本的生成过程中, 只能将对应的0比特位置1, 而不能将
+1比特位置0。
+</p>
+
+<p>
+<a id="org478d13c"></a>
+文献[<a href="#citeproc_bib_item_9">9</a>] 对android的Manifest.xml文件进行修改, 而Manifest.xml上保存着程序的各种依赖,组件,网络以及权限声明, 作者通过在特征上添加绕动, 
+再映射回Manifest.xml上,从而有效绕过了多种检测算法, 在DREBIN数据集上将多个检测器的性能下降30%左右, 并研究了retrain和feature reduction对检测模型
+的影响, 发现对抗攻击很难通过这些手段防御, 论证了对抗攻击的有效性；
+文献[<a href="#citeproc_bib_item_13">13</a>] 提出了一种面向黑盒恶意检测的生成式攻击方法MalGAN, 该方法在得知目标模型的特征类型基础上, 通过Substitute Detector拟合目标网络, 通过生成网络在输入样本和噪音的基础上输出
+对抗样本, 并通过Substitute Detector进行检测, 从而训练得到生成网络;
+文献[<a href="#citeproc_bib_item_7">7</a>] 提出了一种通过插入无关API序列的生成式的对抗样本生成方法, 该方法生成网络基于RNN, 在每个API后面插入无效API序列, 从而进行检测绕过, 然而
+该方法无法在二进制层面对保持原程序的语义一致性, 但在源码层面是可以实现无效API序列插入的, 该方法同样需要知道目标检测器的特征类型;
+文献[<a href="#citeproc_bib_item_10">10</a>] 提出了一种面向恶意代码的梯度攻击方法, 在只需要改变少量特征位的条件下, 就能以极高概率绕过目标系统, 该方法通过在PE尾部添加padding 
+bytes, 再将padding bytes作为要修改的目的空间, 从而进行对抗样本生成;
+文献[<a href="#citeproc_bib_item_1">1</a>] 提出了一种面向android恶意代码API特征的对抗样本生成方法, 通过无效API插入, 打乱API概率转移矩阵, 实现对抗样本的生成;
+文献[<a href="#citeproc_bib_item_18">18</a>] 针对可执行文件特点，首先找到可执行文件的冗余空间作为干扰值的添加位置，并通过快速梯度符号法中加入一阶矩估计和二阶矩估计来解决单布攻击和迭代
+攻击中存在的耦合问题;
+文献[<a href="#citeproc_bib_item_19">19</a>] 提出了基于灰度图像的对抗样本生成方法和基于代码注入的可执行对抗样本攻击方法, 分别通过One Pixel Attack算法和遗传算法进行对抗样本
+生成, 其中基于灰度图像的对抗方法将分类器的准确率从96.6%下降到7%, 而基于代码注入的对抗方法实现了对检测器100%绕过;
+文献[<a href="#citeproc_bib_item_2">2</a>,<a href="#citeproc_bib_item_11">11</a>] 通过强化学习的方法, 定义action集合, 面向黑盒检测器进行学习, 从而完成对抗样本的构造;
+文献[<a href="#citeproc_bib_item_20">20</a>] 提出了一种基于遗传算法的恶意代码对抗样本生成方法, 通过对原始PE头进行动态行为一致的静态改写, 使得生成的对抗样本能够逃逸引擎的检测,
+使得MalConv的检测率下降14.65%;
+文献[<a href="#citeproc_bib_item_21">21</a>] 提出了一种基于LIME的黑盒对抗样本生成方法, 利用LIME模拟目标模型, 再针对LIME生成的模型进行白盒攻击, 通过对输入添加扰动从而生成对抗
+样本。
+</p>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org5eb0acd" class="outline-2">
+<h2 id="org5eb0acd"><span class="section-number-2">2</span> 研究内容和目标</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-org21ded21" class="outline-3">
+<h3 id="org21ded21"><span class="section-number-3">2.1</span> 具体研究内容</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+恶意代码对抗技术针对深度学习的脆弱性进行研究，通过梯度下降，对抗生成的方法产生对抗样本， 从而绕过检测器，实现对抗攻击，这也是近年来恶意代码研究发展的
+趋势。
+恶意代码对抗生成想对于图像领域的对抗生成存在区别，具有更多限制：
+</p>
+<ol class="org-ol">
+<li>在进行对抗攻击时，不能破坏程序的功能完整性，在修改完成后，要保证程序依然可执行，</li>
+<li>添加的扰动位置具有约束，由于PE文件的特殊性，我们添加的绕动不能破坏程序的功能完整性，因此，对于原始PE文件的修改只能在对原始PE功能无影响的区域进行，</li>
+</ol>
+
+<p>
+由于上述限制，导致恶意代码的对抗攻击相对更加困难，而针对检测器的攻击根据是否可以获取到目的检测器的模型结构或输入形式又分为黑盒攻击和白盒攻击，最严格
+的黑盒情况下，假设攻击者无法获取目的检测器的模型结构，输入形式，并且检测器的返回是二值形式，即0或者1, 在这种情况下，攻击者无法进行梯度攻击或者拟合
+黑盒参数，只能进行穷举搜索，暴力枚举等方式，而由于这种假设过强，无法进行有效研究，因此，常见的黑盒定义是假设攻击者可以获取目的检测器的概率输出，即
+目的检测器不单输出0或者1,而是一个置信度，借助置信度，攻击者可以通过一个简单模型去拟合黑盒模型，从而针对简单模型进行白盒攻击，并在黑盒模型上测试成功
+率，同时文献[<a href="#citeproc_bib_item_20">20</a>] 指出此种定义的黑盒攻击还可以按照是否需要知道输入形式进一步区分，[<a href="#citeproc_bib_item_20">20</a>] 认为攻击者在不知道黑盒模型输入的具体形式的情况下，
+只能通过修改原始PE文件完成对抗样本的构造过程，而[<a href="#citeproc_bib_item_1">1</a>,<a href="#citeproc_bib_item_7">7</a>,<a href="#citeproc_bib_item_13">13</a>,<a href="#citeproc_bib_item_19">19</a>,<a href="#citeproc_bib_item_21">21</a>] 则缺乏此假设。
+</p>
+
+<p>
+综上，我们的研究内容将分为三个部分
+</p>
+
+<ol class="org-ol">
+<li>面向恶意代码对抗技术的pe文件动态行为一致性改写方法研究</li>
+<li>面向恶意代码黑盒检测的对抗攻击方法研究</li>
+<li>面向对抗攻击的检测模型研究</li>
+</ol>
+</div>
+
+<div id="outline-container-org68c81c1" class="outline-4">
+<h4 id="org68c81c1"><span class="section-number-4">2.1.1</span> 面向恶意代码对抗技术的PE文件动态行为一致改写方法研究</h4>
+<div class="outline-text-4" id="text-2-1-1">
+<p>
+面向恶意代码对抗技术的PE文件动态行为一致性改写方法是指在不破坏程序功能完整性的情况下，研究PE文件的可修改字段，以及修改方法，研究如何在PE文件的改写
+过程中保证其生成文件依旧可执行，并且具有与改写前相同的恶意行为，由[<a href="#citeproc_bib_item_17">17</a>] ，PE文件分为PE header, .data, .text和.bss段，我们在对文件进行
+一致性改写时，可以在.text段和.data段进行修改，并且只能在段间空隙进行修改，即上一个段与下一段的空白部分，并且需要在修改完空白部分后，修复对应的PE 
+Header字段，从而保障程序的程序功能完整性，本课题基于PE文件研究动态一致性改写方法，分析PE程序结构，解析对应PE文件字段，解析不同字段中存在的可修改
+区域，并根据节段表进行索引，搜索出各个节段中存在的段间空隙，通过分析建立对应的修复方法，以增加节段为例，我们需要在PE Header的段表中添加相关记录以及
+节段偏移，由此我们构建形式如下的三元组：
+\[
+	(position, type, operation, f)
+	\]
+其中，position表示可以修改的位置，type表示位置类型，operation表示可以进行的修改操作，f表示为了维持行为一致性的修复函数，f的参数为position, type, operation;
+由此，借助上面建立的三元组，我们可以进行对应PE修改操作，在每次执行operation字段中定义的操作后，都需要执行相应的\(f(position, type, operation)\)操作
+从而保证PE文件的功能完整性。
+</p>
+
+<p>
+我们将通过对PE文件的各个字段进行分析和实验，获取所有可修改字段以及其对应的三元组，值得注意，除了文献[<a href="#citeproc_bib_item_18">18</a>–<a href="#citeproc_bib_item_20">20</a>] 等提到的可修改字段，
+文献[<a href="#citeproc_bib_item_17">17</a>] 指出，PE文件代码本身存在冗余，我们可以通过对代码本身进行静态分析，获取不会被访问的代码区间加入我们的备选可修改空间，除此之外，
+.data段也存在大量不会被访问的数据或者可修改的符号名等，这些字段由于本身缺乏意义，因此可以被重命名使用，我们将对这些可修改区域进行系统研究，针对PE文件
+系统性地进行动态行为一致性改写方法研究，同时为后续研究进行铺垫。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9246441" class="outline-4">
+<h4 id="org9246441"><span class="section-number-4">2.1.2</span> 面向恶意代码黑盒检测的对抗攻击方法研究</h4>
+<div class="outline-text-4" id="text-2-1-2">
+<p>
+在上述面向恶意代码对抗技术的PE文件动态行为一致改写方法研究的基础上，我们将针对黑盒场景下的恶意代码对抗攻击方法展开研究，当前的恶意代码黑盒对抗生成
+技术主要分为梯度攻击和生成式攻击，其中梯度攻击主要利用模型的梯度反馈从而定义关键像素点，并对齐进行修改实现对抗样本生成，而生成式攻击通过训练生成式
+模型，以原始样本和随机噪声进行输入，然而[<a href="#citeproc_bib_item_7">7</a>,<a href="#citeproc_bib_item_13">13</a>] 先后提出了两个黑盒对抗方案，利用替补模型模拟目标模型的检测功能，一个是基于GAN的方式自动生成对
+抗样本的方案，另一个是通过插入无关API序列实现对抗样本生成的方案。但是，二者都存在局限性：前者需要已知目标模型采用的特征类型，后者无法保证对抗样本
+与原始样本的行为一致性。而如果在图像空间上进行GAN生成对抗样本，会造成模型复杂度较高而对应的加噪区域过小，因此研究较少，主流的方法仍然是使用简单模型
+对目标检测器进行拟合，再根据拟合得到的模型进行梯度攻击，本课题针对此种方法进行研究，类似[<a href="#citeproc_bib_item_21">21</a>] 的方法，通过特征工程获取样本特征，探测目标
+检测器\(f\)的分类结果，再根据相应的扰动算法生成扰动\(r\)，使得\(f(x+r)=benign\)，最后通过r修改原程序，生成最终可以逃过检测的对抗样本。
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org30e9e1a" class="outline-4">
+<h4 id="org30e9e1a"><span class="section-number-4">2.1.3</span> 面向对抗攻击的检测模型研究</h4>
+<div class="outline-text-4" id="text-2-1-3">
+<p>
+针对对抗攻击，本课题还将研究如何面向对抗攻击进行有效防御，特别地，针对常见面向深度学习的对抗攻击方法，我们将假设攻击者会在知道模型结构，网络参数
+的情况进行对抗攻击，基于上述假设，我们将提出一种面向对抗攻击的检测方法，其目的是检测输入样本是否为对抗样本，如果判定为对抗样本，则我们不再进行进一步判断，
+直接可以判定为恶意样本，如果不是对抗样本，我们再将样本送入恶意代码检测器中，对样本是否恶意进行判断。目前主流的恶意代码检测模型主要基于恶意代码的
+opcode灰度图进行检测，而正常编写的程序代码其opcode字段符合一定分布，而在对抗攻击过程中，势必会在可修改区域引入异常的噪声，据此，我们通过VAE针对
+block级别的opcode序列进行文本重建，从而得到正常情况下的重建损失，而对于对抗攻击而言，其VAE的重建损失相比正常block会明显偏高，因此我们可以通过
+设置相应阈值对相应代码块进行重建损失计算，根据得到的损失判定是否为具有对抗攻击痕迹的block，选择该方法有以下好处：
+</p>
+<ol class="org-ol">
+<li>想对于基于图像对抗方法，通过在Opcode语义层面上建立VAE，能有效防止攻击者针对检测器进行攻击，如果攻击者针对VAE本身进行攻击，则需要保证生成的对抗样本
+被修改区域具有正常opcode的分布特征，而在此基础上攻击者基本无法再针对原始检测器进行绕过;</li>
+<li>对于多检测器串行检测，攻击者只需要在两个函数的公共梯度方向上进行修改即可完成攻击样本的构造，而本方法由于任务与原始检测器的不同，很难产生公共梯度
+方向，因此相对更难攻击。</li>
+</ol>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org204bf75" class="outline-3">
+<h3 id="org204bf75"><span class="section-number-3">2.2</span> 研究目标</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+本课题的研究目标是研究一种面向恶意代码对抗技术的PE文件动态一致改写方法，研究面向恶意代码黑盒检测的对抗攻击方法，并针对白盒场景下的恶意代码对抗攻击提出
+一种有效的防御手段，主要研究目标及预期效果如下：
+</p>
+
+<ol class="org-ol">
+<li>研究现有的恶意代码对抗样本生成的PE改写方法，总结各方法的特点，并通过代码静态分析和程序结构分析的手段系统性地针对PE文件提出动态一致的改写方法;</li>
+<li>针对恶意代码黑盒检测，提出一种可行高效的对抗攻击手段，实现黑盒场景下恶意代码对抗样本生成;</li>
+<li>针对恶意代码对抗攻击，提出一种基于VAE的对抗样本识别方法，有效针对对抗样本进行识别，从而有效防止对抗样本攻击;</li>
+<li>对设计的方案进行代码实现，验证方案的正确性和可行性，对方案的性能作出分析。</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org746ec05" class="outline-3">
+<h3 id="org746ec05"><span class="section-number-3">2.3</span> 拟解决的关键科学问题</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+随着网络技术的不断发展，恶意代码呈指数增长，基于机器学习的恶意代码检测方法在主流数据集上都取得了很好的表现，但同时深度模型的脆弱性也成为学界关注的重
+点，多篇研究指出对抗样本攻击在恶意代码分析领域的可行性，本课题基于上述现状分别针对恶意代码对抗攻击和防御手段展开研究，拟解决的关键科学问题如下：
+</p>
+<ol class="org-ol">
+<li>针对PE文件的动态一致改写方法
+    Windows平台作为恶意代码攻击的主要对象，其可执行文件格式的改写方法是对抗攻击研究的重点，然而针对PE文件的动态一致改写方法缺乏系统研究，大多数文献
+    都选取了部分区域进行修改，本课题基于PE文件本身特点，从静态程序分析和PE结构分析两方面，系统性地对PE文件的动态一致改写方法进行研究，针对PE文件提出
+可行的动态一致改写方法;</li>
+<li>恶意代码对抗样本生成
+虽然很多研究都表明了对抗样本攻击在恶意代码分析领域的可行性，能在能确保程序功能一致性的条件下，针对主流深度学习模型展开攻击的方法却非常少，本文
+基于此现状研究在主流深度学习模型下的恶意代码对抗攻击方法，有效生成对抗样本;</li>
+<li>面向对抗攻击的检测模型研究
+针对对抗攻击的检测是未来恶意代码检测的发展趋势，本课题面向对抗攻击设计有效的防御手段，针对对抗样本的对抗攻击痕迹通过VAE进行捕捉，从而有效防止对抗样本
+绕过恶意代码检测。</li>
+</ol>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org7057e9e" class="outline-2">
+<h2 id="org7057e9e"><span class="section-number-2">3</span> 研究方案设计及可行性分析</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-orgbbb85ac" class="outline-3">
+<h3 id="orgbbb85ac"><span class="section-number-3">3.1</span> 研究方法</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+针对本课题的研究内容和特性, 为达到研究目的, 拟采用如下研究方法:
+</p>
+<ol class="org-ol">
+<li>基础知识准备: 收集整理关于恶意代码分类和同源分析方面的论文, 网络文档等资料, 调研目前恶意代码分类和同源分析不同方案的差异, 
+积极利用学校图书馆的书本资料和电子数据库, 网络相关学术数据库等资源, 充分了解相关基础知识;</li>
+<li>技术优化研究: 通过查找相关资料, 查找关于恶意代码的各种对抗攻击方法, 研究更加高效的恶意代码对抗攻击方法，
+并针对PE恶意代码;</li>
+<li>方案设计与实现: 结合所调研的基于深度学习恶意代码对抗攻击算法, 设计有效的恶意代码对抗防御方法, 并进行代码实现, 整理相关实验结果,
+并与现有方案进行比较分析。</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgc73083d" class="outline-3">
+<h3 id="orgc73083d"><span class="section-number-3">3.2</span> 技术路线</h3>
+<div class="outline-text-3" id="text-3-2">
+
+<div id="orgeb5ca4d" class="figure">
+<p><img src="./ConditionalFGSM.png" alt="ConditionalFGSM.png" />
+</p>
+<p><span class="figure-number">Figure 1: </span>面向恶意代码黑盒检测的对抗攻击方法</p>
+</div>
+
+
+<div id="orge87dd87" class="figure">
+<p><img src="./AdversarialDetection.png" alt="AdversarialDetection.png" />  
+</p>
+<p><span class="figure-number">Figure 2: </span>面向对抗攻击的检测模型研究</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge79bec8" class="outline-3">
+<h3 id="orge79bec8"><span class="section-number-3">3.3</span> 技术方法</h3>
+<div class="outline-text-3" id="text-3-3">
+</div>
+<div id="outline-container-org35aacb7" class="outline-4">
+<h4 id="org35aacb7"><span class="section-number-4">3.3.1</span> 面向恶意代码对抗技术的PE文件动态行为一致改写方法研究</h4>
+<div class="outline-text-4" id="text-3-3-1">
+<p>
+本课题基于PE文件研究动态一致性改写方法，分析PE程序结构，解析对应PE文件字段，解析不同字段中存在的可修改
+区域，并根据节段表进行索引，搜索出各个节段中存在的段间空隙，通过分析建立对应的修复方法，以增加节段为例，我们需要在PE Header的段表中添加相关记录以及
+节段偏移，由此我们构建形如\((position, type, operation, f)\)的三元组，其中，position表示可以修改的位置，type表示位置类型，operation表示可以进行的修改操作，f表示为了维持行为一致性的修复函数，f的参数为position, type, operation;
+由此，借助上面建立的三元组，我们可以进行对应PE修改操作，在每次执行operation字段中定义的操作后，都需要执行相应的\(f(position, type, operation)\)操作
+从而保证PE文件的功能完整性， 我们将通过对PE文件的各个字段进行分析和实验，获取所有可修改字段以及其对应的三元组，三元组中的位置包括：PE区段表，.data
+段间空隙，.text段间空隙，.text段无用代码，.data可替换数据以及PE Header中可修改字段等。
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-orgeeb5bf3" class="outline-4">
+<h4 id="orgeeb5bf3"><span class="section-number-4">3.3.2</span> 面向恶意代码黑盒检测的对抗攻击方法研究</h4>
+<div class="outline-text-4" id="text-3-3-2">
+<p>
+如上图<a href="#orgeb5ca4d">1</a>所示，我们假设在黑盒场景下对目标模型进行攻击，首先使用substitute model拟合目标模型，通过将样本输入Black-box得到概率分布，再将对应的概率
+分布迁移到Substitute detector中，进行梯度反馈，从而调整substitute model的对应参数，经过多次迭代学习，实现参数优化，完成黑盒模型的模拟过程，在
+对抗样本生成阶段，我们以Substitute detector作为我们的白盒模型进行梯度攻击，从而实现对抗样本的构造。
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org4f6ac23" class="outline-4">
+<h4 id="org4f6ac23"><span class="section-number-4">3.3.3</span> 面向对抗攻击的检测模型研究</h4>
+<div class="outline-text-4" id="text-3-3-3">
+<p>
+如上图<a href="#orge87dd87">2</a>所示，我们将恶意代码按ret，jmp，jne, je等条件转移或无条件转移指令划分为基础语句块(basic block)，作为VAE重构的基础单位，其中训练集中只
+包含Benign Set，即良性训练集，我们将所有良性训练集中的恶意代码按基础语句块进行切割，只取opcode字段，丢弃operand字段，将基础语句块输入到Encoder模块，
+通过Decoder模块进行解码重建，在这个训练过程中，模型学到的Embedding Representation即Z会趋于拟合正常编写代码的opcode分布，而对于对抗攻击产生的异常
+opcode序列，由于这部分语句由对抗攻击产生，缺乏正常编写代码的opcode统计分布特征，从而在通过VAE重建时会产生较大的损失，当超过我们设定的阈值时，我们
+将其判定为异常区域，即带有对抗攻击痕迹的区域，而对于正常代码，重建损失较少，则不会被判定异常，通过上述方法，我们就能有效识别出对抗攻击所产生的对抗
+样本。
+</p>
+</div>
+</div>
+</div>
+
+
+
+<div id="outline-container-org2887ebf" class="outline-3">
+<h3 id="org2887ebf"><span class="section-number-3">3.4</span> 可行性分析</h3>
+<div class="outline-text-3" id="text-3-4">
+<p>
+本课题的可行性主要体现在以下两个方面:
+</p>
+<ol class="org-ol">
+<li>研究内容符合实际需求: 恶意代码在互联网上已经成为随处可见的威胁, 而研究面向恶意代码检测的对抗技术, 能帮助我们站在攻击者的角度看待恶意代码检测的问题,
+及时发现当前恶意代码检测方法中的不足, 以及如何改进相关方法应对对抗样本的威胁.</li>
+<li>研究思路可行: 目前基于不同特征的深度学习的恶意代码分类算法, 在各个公开数据集上都得到了充分实验, 论证了基于深度学习在恶意代码领域的可行性, 而最近的
+研究也指出对抗样本在恶意代码领域的可行性, 多篇研究表明在恶意代码分析领域构造对抗样本是可行的, 而面向对抗样本进行有效防御也是必要的.</li>
+</ol>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org537ba2f" class="outline-2">
+<h2 id="org537ba2f"><span class="section-number-2">4</span> 本研究课题可能的创新之处</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+随着网络技术的不断发展，恶意代码呈指数增长，基于机器学习的恶意代码检测方法在主流数据集上都取得了很好的表现，但同时深度模型的脆弱性也成为学界关注的重
+点，多篇研究指出对抗样本攻击在恶意代码分析领域的可行性，但针对PE文件以及如何从特征工程的角度过渡到不依赖具体特征深度学习模型的研究较少，大多数研究
+提出的方法无法针对深度学习模型方法进行有效攻击，本课题基于上述现状分别针对恶意代码对抗攻击和防御手段展开研究，可能存在的创新之处如下：
+</p>
+<ol class="org-ol">
+<li>提出针对PE文件的动态一致改写方法，Windows平台作为恶意代码攻击的主要对象，其可执行文件格式的改写方法是对抗攻击研究的重点，然而针对PE文件的动态一致
+改写方法缺乏系统研究，大多数文献都选取了部分区域进行修改，本课题基于PE文件本身特点，从静态程序分析和PE结构分析两方面，系统性地对PE文件的动态一致
+改写方法进行研究，针对PE文件提出可行的动态一致改写方法;</li>
+<li>提出一种面向黑盒检测的恶意代码对抗样本生成算法，虽然很多研究都表明了对抗样本攻击在恶意代码分析领域的可行性，能在能确保程序功能一致性的条件下，针
+对主流深度学习模型展开攻击的方法却非常少，本文基于此现状研究在主流深度学习模型下的恶意代码对抗攻击方法，有效生成对抗样本;</li>
+<li>提出一种面向对抗攻击的检测模型，针对对抗攻击的检测是未来恶意代码检测的发展趋势，本课题面向对抗攻击设计有效的防御手段，针对对抗样本的对抗攻击痕迹
+通过VAE进行捕捉，从而有效防止对抗样本绕过恶意代码检测。</li>
+</ol>
+</div>
+</div>
+
+
+<div id="outline-container-org83ba5e9" class="outline-2">
+<h2 id="org83ba5e9"><span class="section-number-2">5</span> 研究基础与工作条件</h2>
+<div class="outline-text-2" id="text-5">
+</div>
+<div id="outline-container-orga33dfb3" class="outline-3">
+<h3 id="orga33dfb3"><span class="section-number-3">5.1</span> 与本课题相关的研究工作积累工作</h3>
+<div class="outline-text-3" id="text-5-1">
+<p>
+本人在课程学习方面、专业知识方面和选题准备方面有良好的知识积累，为课题的研究与实现打下了基础。
+在研究生阶段曾学习《软件安全》、《网络安全》、《操作系统》等与本课题实现相关的课程，在恶意代码基础知识方面具有良好的掌握。
+在恶意代码技术的专业研究方向上，学习了《恶意代码分析实战》、《加密与解密》、等典型恶意代码分析内容，对典型恶意代码的数据结构
+、攻击流程、运行步骤等恶意代码共性内容有较为深刻的理解。针对恶意代码的研究，调研过各种攻击机制，同时在恶意代码自动化分析项目中研究过
+恶意代码家族分类和同源分析相关内容, 对当前主流的恶意代码家族分类和同源分析方法有一定了解. 针对恶意代码的家族分类方法, 调研过基于Opcode图像,
+Opcode序列, API序列, ACFG图等多种恶意代码分类方法, 了解如何利用深度学习网络模型对恶意代码进行分类, 了解如何利用同源分析手段对恶意代码的家族
+进行研判，通过分析目前恶意代码检测的研究趋势, 结合积累的知识, 最终选择了本课题研究方向, 在确定选题后, 查找了相关资料并总结了目前恶意代码检测
+的发展现状, 学习了包括静态特征和动态特征等多个方面的内容, 为选题的可行性分析做足准备.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc6aeeda" class="outline-3">
+<h3 id="orgc6aeeda"><span class="section-number-3">5.2</span> 个人知识积累</h3>
+<div class="outline-text-3" id="text-5-2">
+<p>
+本人通过查阅相关资料，对恶意代码检测的相关算法进行了学习，拥有一定恶意代码方面的知识积累。了解恶意代码的基本架构和运行流程，能运用
+自己掌握的C、C++、Java, Python等程序设计语言进行算法设计和实现
+</p>
+</div>
+</div>
+
+<div id="outline-container-org06057f3" class="outline-3">
+<h3 id="org06057f3"><span class="section-number-3">5.3</span> 硬件设备</h3>
+<div class="outline-text-3" id="text-5-3">
+<p>
+实验室计算机性能优越, 算力充足, 具有GPU处理器, 高性能CPU, 可满足当前数据集下深度学习与优化的计算需求
+</p>
+
+
+
+<style>.csl-left-margin{float: left; padding-right: 0em;} .csl-right-inline{margin: 0 0 0 2.4em;}</style><h2 class='citeproc-org-bib-h2'>Bibliography</h2>
+<div class="csl-bib-body">
+  <div class="csl-entry"><a id="citeproc_bib_item_1"></a>
+    <div class="csl-left-margin">[1]</div><div class="csl-right-inline">Fabrizio Cara, Michele Scalas, Giorgio Giacinto, and Davide Maiorca. 2020. On the Feasibility of Adversarial Sample Creation Using the Android System API. <i>Information</i> 11, 9 (September 2020), 433. DOI:<a href="https://doi.org/10.3390/info11090433">https://doi.org/10.3390/info11090433</a></div>
+  </div>
+  <div class="csl-entry"><a id="citeproc_bib_item_2"></a>
+    <div class="csl-left-margin">[2]</div><div class="csl-right-inline">Jun Chen, Jingfei Jiang, Rongchun Li, and Yong Dou. 2020. Generating Adversarial Examples for Static PE Malware Detector Based on Deep Reinforcement Learning. <i>Journal of Physics: Conference Series</i> 1575, 1 (June 2020), 012011. DOI:<a href="https://doi.org/10.1088/1742-6596/1575/1/012011">https://doi.org/10.1088/1742-6596/1575/1/012011</a></div>
+  </div>
+  <div class="csl-entry"><a id="citeproc_bib_item_3"></a>
+    <div class="csl-left-margin">[3]</div><div class="csl-right-inline">Gianni D’Angelo, Massimo Ficco, and Francesco Palmieri. 2021. Association rule-based malware classification using common subsequences of API calls. <i>Applied Soft Computing</i> 105, (2021), 107234. DOI:<a href="https://doi.org/https://doi.org/10.1016/j.asoc.2021.107234">https://doi.org/https://doi.org/10.1016/j.asoc.2021.107234</a></div>
+  </div>
+  <div class="csl-entry"><a id="citeproc_bib_item_4"></a>
+    <div class="csl-left-margin">[4]</div><div class="csl-right-inline">Ammar Ahmed E. Elhadi, Mohd Aizaini Maarof, Bazara I.A. Barry, and Hentabli Hamza. 2014. Enhancing the detection of metamorphic malware using call graphs. <i>Computers &#38; Security</i> 46, (2014), 62–78. DOI:<a href="https://doi.org/https://doi.org/10.1016/j.cose.2014.07.004">https://doi.org/https://doi.org/10.1016/j.cose.2014.07.004</a></div>
+  </div>
+  <div class="csl-entry"><a id="citeproc_bib_item_5"></a>
+    <div class="csl-left-margin">[5]</div><div class="csl-right-inline">Daniel Gibert, Carles Mateu, and Jordi Planes. 2020. HYDRA: A multimodal deep learning framework for malware classification. <i>Computers &#38; Security</i> 95, (2020), 101873. DOI:<a href="https://doi.org/https://doi.org/10.1016/j.cose.2020.101873">https://doi.org/https://doi.org/10.1016/j.cose.2020.101873</a></div>
+  </div>
+  <div class="csl-entry"><a id="citeproc_bib_item_6"></a>
+    <div class="csl-left-margin">[6]</div><div class="csl-right-inline">Ian J. Goodfellow, Jonathon Shlens, and Christian Szegedy. 2015. Explaining and Harnessing Adversarial Examples. </div>
+  </div>
+  <div class="csl-entry"><a id="citeproc_bib_item_7"></a>
+    <div class="csl-left-margin">[7]</div><div class="csl-right-inline">Weiwei Hu and Ying Tan. 2017. Black-Box Attacks against RNN based Malware Detection Algorithms. <i>CoRR</i> abs/1705.08131, (2017). Retrieved from <a href="http://arxiv.org/abs/1705.08131">http://arxiv.org/abs/1705.08131</a></div>
+  </div>
+  <div class="csl-entry"><a id="citeproc_bib_item_8"></a>
+    <div class="csl-left-margin">[8]</div><div class="csl-right-inline">Yifei Jian, Hongbo Kuang, Chenglong Ren, Zicheng Ma, and Haizhou Wang. 2021. A novel framework for image-based malware detection with a deep neural network. <i>Computers &#38; Security</i> 109, (2021), 102400. DOI:<a href="https://doi.org/https://doi.org/10.1016/j.cose.2021.102400">https://doi.org/https://doi.org/10.1016/j.cose.2021.102400</a></div>
+  </div>
+  <div class="csl-entry"><a id="citeproc_bib_item_9"></a>
+    <div class="csl-left-margin">[9]</div><div class="csl-right-inline">Nicolas Papernot Kathrin Grosse, Praveen Manoharan, Michael Backes, and Patrick McDaniel. 2016. Adversarial Perturbations Against Deep Neural Networks for Malware Classification. Retrieved from <a href="https://arxiv.org/pdf/1606.04435v2.pdf">https://arxiv.org/pdf/1606.04435v2.pdf</a></div>
+  </div>
+  <div class="csl-entry"><a id="citeproc_bib_item_10"></a>
+    <div class="csl-left-margin">[10]</div><div class="csl-right-inline">Bojan Kolosnjaji, Ambra Demontis, Battista Biggio, Davide Maiorca, Giorgio Giacinto, Claudia Eckert, and Fabio Roli. 2018. Adversarial Malware Binaries: Evading Deep Learning for Malware Detection in Executables. <i>2018 26th European Signal Processing Conference (EUSIPCO)</i> (September 2018). DOI:<a href="https://doi.org/10.23919/eusipco.2018.8553214">https://doi.org/10.23919/eusipco.2018.8553214</a></div>
+  </div>
+  <div class="csl-entry"><a id="citeproc_bib_item_11"></a>
+    <div class="csl-left-margin">[11]</div><div class="csl-right-inline">Xintong Li and Qi Li. 2021. An IRL-based malware adversarial generation method to evade anti-malware engines. <i>Comput. Secur.</i> 104, (2021), 102118. DOI:<a href="https://doi.org/10.1016/j.cose.2020.102118">https://doi.org/10.1016/j.cose.2020.102118</a></div>
+  </div>
+  <div class="csl-entry"><a id="citeproc_bib_item_12"></a>
+    <div class="csl-left-margin">[12]</div><div class="csl-right-inline">L. Nataraj, S. Karthikeyan, G. Jacob, and B. S. Manjunath. 2011. Malware Images: Visualization and Automatic Classification. In <i>Proceedings of the 8th International Symposium on Visualization for Cyber Security</i> (VizSec ’11), Association for Computing Machinery, New York, NY, USA. DOI:<a href="https://doi.org/10.1145/2016904.2016908">https://doi.org/10.1145/2016904.2016908</a></div>
+  </div>
+  <div class="csl-entry"><a id="citeproc_bib_item_13"></a>
+    <div class="csl-left-margin">[13]</div><div class="csl-right-inline">Ying Tan Weiwei Hu. 2017. Generating Adversarial Malware Examples for Black-Box Attacks Based on GAN. Retrieved from <a href="https://arxiv.org/pdf/1702.05983.pdf">https://arxiv.org/pdf/1702.05983.pdf</a></div>
+  </div>
+  <div class="csl-entry"><a id="citeproc_bib_item_14"></a>
+    <div class="csl-left-margin">[14]</div><div class="csl-right-inline">Binglin Zhao, Zhen Shan, Fudong Liu, Bo Zhao, Yihang Chen, and Wenjie Sun. 2019. Malware homology identification based on a gene perspective. <i>Frontiers of Information Technology &#38; Electronic Engineering</i> 20, (2019), 801–815.</div>
+  </div>
+  <div class="csl-entry"><a id="citeproc_bib_item_15"></a>
+    <div class="csl-left-margin">[15]</div><div class="csl-right-inline">Shuang Zhao, Xiaobo Ma, Wei Zou, and Bo Bai. 2019. DeepCG: Classifying Metamorphic Malware Through Deep Learning of Call Graphs. In <i>Security and Privacy in Communication Networks</i>, Springer International Publishing, Cham, 171–190. DOI:<a href="https://doi.org/10.1007/978-3-030-37228-6_9">https://doi.org/10.1007/978-3-030-37228-6_9</a></div>
+  </div>
+  <div class="csl-entry"><a id="citeproc_bib_item_16"></a>
+    <div class="csl-left-margin">[16]</div><div class="csl-right-inline">中国互联网络信息中心. 2021. 第48次中国互联网络发展状况统计报告. Retrieved from <a href="https://n2.sinaimg.cn/finance/a2d36afe/20210827/FuJian1.pdf">https://n2.sinaimg.cn/finance/a2d36afe/20210827/FuJian1.pdf</a></div>
+  </div>
+  <div class="csl-entry"><a id="citeproc_bib_item_17"></a>
+    <div class="csl-left-margin">[17]</div><div class="csl-right-inline">俞甲子 潘爱民. 2009. <i>程序员的自我修养:链接,装载与库</i>. 电子工业出版社.</div>
+  </div>
+  <div class="csl-entry"><a id="citeproc_bib_item_18"></a>
+    <div class="csl-left-margin">[18]</div><div class="csl-right-inline">吴睿. 2020. 基于对抗原理的恶意代码分类器的攻击与防御方法研究. 哈尔滨工业大学. DOI:<a href="https://doi.org/10.27061/d.cnki.ghgdu.2020.004559">https://doi.org/10.27061/d.cnki.ghgdu.2020.004559</a></div>
+  </div>
+  <div class="csl-entry"><a id="citeproc_bib_item_19"></a>
+    <div class="csl-left-margin">[19]</div><div class="csl-right-inline">谷尚育. 2020. 针对恶意代码分类的对抗技术研究. 中国科学技术大学. DOI:<a href="https://doi.org/10.27517/d.cnki.gzkju.2020.000708">https://doi.org/10.27517/d.cnki.gzkju.2020.000708</a></div>
+  </div>
+  <div class="csl-entry"><a id="citeproc_bib_item_20"></a>
+    <div class="csl-left-margin">[20]</div><div class="csl-right-inline">闫佳，聂楚江，苏璞睿. 2020. 基于遗传算法的恶意代码对抗样本生成方法. <i>电子与信息学报</i> (2020). DOI:<a href="https://doi.org/10.11999/JEIT191059">https://doi.org/10.11999/JEIT191059</a></div>
+  </div>
+  <div class="csl-entry"><a id="citeproc_bib_item_21"></a>
+    <div class="csl-left-margin">[21]</div><div class="csl-right-inline">黄天波. 2021. 基于LIME的恶意代码对抗样本生成技术. <i>北京航空航天大学学报</i> (2021). DOI:<a href="https://doi.org/10.13700/j.bh.1001-5965.2020.0397">https://doi.org/10.13700/j.bh.1001-5965.2020.0397</a></div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Created: 2021-12-13 Mon 15:00</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
