@@ -1,7 +1,7 @@
 #+TITLE: 面向恶意代码检测的对抗技术研究
 #+SETUPFILE: ~/org-themes/src/comfy_inline/comfy_inline.theme
 #+CSL_STYLE: ./association-for-computing-machinery.csl 
-#+LANGUAGE: zh_CN.UTF-8
+#+LANGUAGE: zh-CN
 
 * 立题依据
 

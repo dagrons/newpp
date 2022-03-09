@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
 <head>
-<!-- 2021-12-13 Mon 16:06 -->
+<!-- 2021-12-13 Mon 15:49 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>面向恶意代码检测的对抗技术研究</title>
@@ -271,65 +271,65 @@ for the JavaScript code in this tag.
 <h2>&#30446;&#24405;</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org84f87bc">1. 立题依据</a>
+<li><a href="#org78a593d">1. 立题依据</a>
 <ul>
-<li><a href="#org8e1bc07">1.1. 研究目的和意义</a></li>
-<li><a href="#org0665036">1.2. 国内外发展现状</a>
+<li><a href="#org30556e1">1.1. 研究目的和意义</a></li>
+<li><a href="#org56d5c80">1.2. 国内外发展现状</a>
 <ul>
-<li><a href="#orgece54a2">1.2.1. 恶意代码分析</a></li>
-<li><a href="#org88e843d">1.2.2. 恶意代码分析对抗技术</a></li>
+<li><a href="#orga20d692">1.2.1. 恶意代码分析</a></li>
+<li><a href="#orge19bfb5">1.2.2. 恶意代码分析对抗技术</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org63be8ee">2. 研究内容和目标</a>
+<li><a href="#org57fedb9">2. 研究内容和目标</a>
 <ul>
-<li><a href="#orge4f983d">2.1. 具体研究内容</a>
+<li><a href="#orgc8e012e">2.1. 具体研究内容</a>
 <ul>
-<li><a href="#orgfd623d0">2.1.1. 面向恶意代码对抗技术的PE文件动态行为一致改写方法研究</a></li>
-<li><a href="#org08c8fab">2.1.2. 面向恶意代码黑盒检测的对抗攻击方法研究</a></li>
-<li><a href="#org3c64c5e">2.1.3. 面向对抗攻击的检测模型研究</a></li>
+<li><a href="#orgc54e33e">2.1.1. 面向恶意代码对抗技术的PE文件动态行为一致改写方法研究</a></li>
+<li><a href="#org604f397">2.1.2. 面向恶意代码黑盒检测的对抗攻击方法研究</a></li>
+<li><a href="#orgaf8ba0b">2.1.3. 面向对抗攻击的检测模型研究</a></li>
 </ul>
 </li>
-<li><a href="#org7766540">2.2. 研究目标</a></li>
-<li><a href="#orgb8e1366">2.3. 拟解决的关键科学问题</a></li>
+<li><a href="#orgb9b972f">2.2. 研究目标</a></li>
+<li><a href="#org9339436">2.3. 拟解决的关键科学问题</a></li>
 </ul>
 </li>
-<li><a href="#orgf076cd5">3. 研究方案设计及可行性分析</a>
+<li><a href="#org3c045a4">3. 研究方案设计及可行性分析</a>
 <ul>
-<li><a href="#orge1ca61e">3.1. 研究方法</a></li>
-<li><a href="#orgaf05554">3.2. 技术路线</a></li>
-<li><a href="#org65bba93">3.3. 技术方法</a>
+<li><a href="#org226961b">3.1. 研究方法</a></li>
+<li><a href="#org1c5da58">3.2. 技术路线</a></li>
+<li><a href="#org6a79daf">3.3. 技术方法</a>
 <ul>
-<li><a href="#org0405091">3.3.1. 面向恶意代码对抗技术的PE文件动态行为一致改写方法研究</a></li>
-<li><a href="#org9b591e4">3.3.2. 面向恶意代码黑盒检测的对抗攻击方法研究</a></li>
-<li><a href="#orgf01178e">3.3.3. 面向对抗攻击的检测模型研究</a></li>
+<li><a href="#org5b6fda6">3.3.1. 面向恶意代码对抗技术的PE文件动态行为一致改写方法研究</a></li>
+<li><a href="#orgdfe71d3">3.3.2. 面向恶意代码黑盒检测的对抗攻击方法研究</a></li>
+<li><a href="#org04cb494">3.3.3. 面向对抗攻击的检测模型研究</a></li>
 </ul>
 </li>
-<li><a href="#orga5e3adc">3.4. 可行性分析</a></li>
+<li><a href="#org89cd9a1">3.4. 可行性分析</a></li>
 </ul>
 </li>
-<li><a href="#org52f456e">4. 本研究课题可能的创新之处</a></li>
-<li><a href="#org8ba92e0">5. 研究基础与工作条件</a>
+<li><a href="#orgdf1ea7d">4. 本研究课题可能的创新之处</a></li>
+<li><a href="#orgeb8ce2b">5. 研究基础与工作条件</a>
 <ul>
-<li><a href="#org2140c64">5.1. 与本课题相关的研究工作积累工作</a></li>
-<li><a href="#org9a546f0">5.2. 个人知识积累</a></li>
-<li><a href="#org3d18b55">5.3. 硬件设备</a></li>
+<li><a href="#org294aa00">5.1. 与本课题相关的研究工作积累工作</a></li>
+<li><a href="#orgbba3821">5.2. 个人知识积累</a></li>
+<li><a href="#org6049eac">5.3. 硬件设备</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org84f87bc" class="outline-2">
-<h2 id="org84f87bc"><span class="section-number-2">1</span> 立题依据</h2>
+<div id="outline-container-org78a593d" class="outline-2">
+<h2 id="org78a593d"><span class="section-number-2">1</span> 立题依据</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-org8e1bc07" class="outline-3">
-<h3 id="org8e1bc07"><span class="section-number-3">1.1</span> 研究目的和意义</h3>
+<div id="outline-container-org30556e1" class="outline-3">
+<h3 id="org30556e1"><span class="section-number-3">1.1</span> 研究目的和意义</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
-<a id="org8e41d6a"></a>
+<a id="orgea354aa"></a>
 </p>
 
 <p>
@@ -339,7 +339,7 @@ for the JavaScript code in this tag.
 </p>
 
 <p>
-<a id="org5e354cd"></a>
+<a id="orgf082e43"></a>
 一方面,互联网终端的使用者隐私信息越来越多,用户习惯将一些个人信息信息存在电子设备中,包括照片,通信录,聊天记录,甚至密码等; 另一方面,互联网在带给人们便利
 的同时,也带来了极大的安全隐患, 多种多样的网络攻击威胁用户的信息安全,甚至社会治安,而恶意代码泛滥就是其中最为严重的威胁之一。
 </p>
@@ -352,14 +352,14 @@ for the JavaScript code in this tag.
 </p>
 
 <p>
-<a id="org71c1f11"></a>
+<a id="orgd8d0098"></a>
 针对恶意代码迅速增长的现状,为了保护互联网终端用户的信息安全,防止用户系统,信息以及资产不受恶意代码的破坏,学界和工业界针对恶意代码都展开了广泛的研究,
 传统的恶意代码分析技术主要包括静态分析和动态分析,而近年来,为了适应恶意代码的大规模爆发,而传统检测方法具有明显不足的现状,日渐成熟的深度学习方法也被
 引入到恶意代码分析领域之中并取得了很好的效果。
 </p>
 
 <p>
-<a id="org66ab9a1"></a>
+<a id="orga49268e"></a>
 然而,由于深度学习模型的不可解释性, Christian Szegedy提出了深度学习中对抗样本[<a href="#citeproc_bib_item_6">6</a>], 他们发现包括CNN在内的深度学习模型对于对抗
 样本具有极高的脆弱性.通过在原样本中添加特意构造的噪声,就能实现对深度学习模型的欺骗,后续研究也指出这样的对抗样本在其他机器学习模型中同样存在,这表明
 基于机器学习的恶意代码检测器是可以通过构造对抗样本进行绕过的,研究针对恶意代码分析的对抗攻击技术即可以提高恶意代码检测器的鲁棒性,进行抵抗对抗样本的攻击,
@@ -368,8 +368,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org0665036" class="outline-3">
-<h3 id="org0665036"><span class="section-number-3">1.2</span> 国内外发展现状</h3>
+<div id="outline-container-org56d5c80" class="outline-3">
+<h3 id="org56d5c80"><span class="section-number-3">1.2</span> 国内外发展现状</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 安全领域,攻防双方都在不断提升自己的能力,攻击者会从防御方的角度出发,针对检测系统研究绕过方法,而防御方会针对攻击者的攻击和绕过手段进行更进一步的分析,
@@ -377,8 +377,8 @@ for the JavaScript code in this tag.
 </p>
 </div>
 
-<div id="outline-container-orgece54a2" class="outline-4">
-<h4 id="orgece54a2"><span class="section-number-4">1.2.1</span> 恶意代码分析</h4>
+<div id="outline-container-orga20d692" class="outline-4">
+<h4 id="orga20d692"><span class="section-number-4">1.2.1</span> 恶意代码分析</h4>
 <div class="outline-text-4" id="text-1-2-1">
 <p>
 恶意代码分析主要分为恶意代码检测和恶意代码家族分类,恶意代码检测是一个二分类问题,其目的是为了判别对应样本是否是恶意代码,而恶意代码家族分类则是在
@@ -395,28 +395,28 @@ for the JavaScript code in this tag.
 </p>
 
 <p>
-<a id="org19e2748"></a>
+<a id="org8f46a15"></a>
 文献[<a href="#citeproc_bib_item_12">12</a>] 从图像的角度入手,将恶意代码的二进制数据按每8bit转换成0-255之间的灰度值,从而将恶意代码本身转化成为灰度图, 根据不同文件大小
 设定不同尺寸的图像宽度,并用GIST方法计算灰度图的纹理特征对恶意代码进行分类, 在作者收集的25类家族9458个样本上达到了98%的准确率；
 文献[<a href="#citeproc_bib_item_8">8</a>] 从恶意代码的bytes文件和asm文件两方面入手, 将bytes文件分别转为为十进制的数值矩阵, 将bytes文件和asm文件通过CBOW模型转化为
 对应的word vector,构建word vector矩阵,从而形成三通道图像,再利用ResNet+LSTM+Attention的网络结构进行恶意代码检测,在微软的BIG2015数据集上达到了98.3%
 的正确率和F1 Score; 
-<a id="org833bef4"></a>
+<a id="org3480ac5"></a>
 文献[<a href="#citeproc_bib_item_3">3</a>] 从恶意代码的API调用序列入手, 通过对生物信息学上的序列比对算法进行改进, 对恶意代码进行有效分类, 达到了99.03%的正确率;
-<a id="org8813e9d"></a>
+<a id="org2702bcb"></a>
 文献[<a href="#citeproc_bib_item_4">4</a>] 通过构建函数和系统资源之间的依赖关系,包括API与系统资源,API与API,系统资源与系统资源等总共4种关系, 利用得到的图作为恶意代码
 检测算法的输入, 在恶意代码检测任务上取得了98%的正确率;
 文献[<a href="#citeproc_bib_item_15">15</a>] 从恶意代码的函数依赖图入手,通过将IDA导出的GDL文件转化为位图,再利用CNN进行恶意代码分类;
 文献[<a href="#citeproc_bib_item_14">14</a>] 从恶意代码的函数依赖图的角度入手, 通过将图进行切割, 并通过频繁子图的方式定义恶意代码家族基因, 从而实现同源性分析;
-<a id="org2e72ba8"></a>
+<a id="orgaa0984b"></a>
 文献[<a href="#citeproc_bib_item_5">5</a>] 从API序列, Byte以及Opcode序列多种特征进行特征融合, 从而提升模型性能, 达到了99.7%的正确率。
 </p>
 </div>
 </div>
 
 
-<div id="outline-container-org88e843d" class="outline-4">
-<h4 id="org88e843d"><span class="section-number-4">1.2.2</span> 恶意代码分析对抗技术</h4>
+<div id="outline-container-orge19bfb5" class="outline-4">
+<h4 id="orge19bfb5"><span class="section-number-4">1.2.2</span> 恶意代码分析对抗技术</h4>
 <div class="outline-text-4" id="text-1-2-2">
 <p>
 恶意代码分析对抗主要根据深度学习模型的脆弱性, 通过在原样本上添加扰动, 从而影响检测器的判别, 通过刻意地构造绕动, 可以让目标检测器实现误判, 对于
@@ -434,7 +434,7 @@ for the JavaScript code in this tag.
 </p>
 
 <p>
-<a id="org4495f84"></a>
+<a id="org7811895"></a>
 文献[<a href="#citeproc_bib_item_9">9</a>] 对android的Manifest.xml文件进行修改, 而Manifest.xml上保存着程序的各种依赖,组件,网络以及权限声明, 作者通过在特征上添加绕动, 
 再映射回Manifest.xml上,从而有效绕过了多种检测算法, 在DREBIN数据集上将多个检测器的性能下降30%左右, 并研究了retrain和feature reduction对检测模型
 的影响, 发现对抗攻击很难通过这些手段防御, 论证了对抗攻击的有效性；
@@ -461,12 +461,12 @@ bytes, 再将padding bytes作为要修改的目的空间, 从而进行对抗样�
 </div>
 
 
-<div id="outline-container-org63be8ee" class="outline-2">
-<h2 id="org63be8ee"><span class="section-number-2">2</span> 研究内容和目标</h2>
+<div id="outline-container-org57fedb9" class="outline-2">
+<h2 id="org57fedb9"><span class="section-number-2">2</span> 研究内容和目标</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-orge4f983d" class="outline-3">
-<h3 id="orge4f983d"><span class="section-number-3">2.1</span> 具体研究内容</h3>
+<div id="outline-container-orgc8e012e" class="outline-3">
+<h3 id="orgc8e012e"><span class="section-number-3">2.1</span> 具体研究内容</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 恶意代码对抗技术针对深度学习的脆弱性进行研究，通过梯度下降，对抗生成的方法产生对抗样本， 从而绕过检测器，实现对抗攻击，这也是近年来恶意代码研究发展的
@@ -498,8 +498,8 @@ bytes, 再将padding bytes作为要修改的目的空间, 从而进行对抗样�
 </ol>
 </div>
 
-<div id="outline-container-orgfd623d0" class="outline-4">
-<h4 id="orgfd623d0"><span class="section-number-4">2.1.1</span> 面向恶意代码对抗技术的PE文件动态行为一致改写方法研究</h4>
+<div id="outline-container-orgc54e33e" class="outline-4">
+<h4 id="orgc54e33e"><span class="section-number-4">2.1.1</span> 面向恶意代码对抗技术的PE文件动态行为一致改写方法研究</h4>
 <div class="outline-text-4" id="text-2-1-1">
 <p>
 面向恶意代码对抗技术的PE文件动态行为一致性改写方法是指在不破坏程序功能完整性的情况下，研究PE文件的可修改字段，以及修改方法，研究如何在PE文件的改写
@@ -525,8 +525,8 @@ Header字段，从而保障程序的程序功能完整性，本课题基于PE文
 </div>
 </div>
 
-<div id="outline-container-org08c8fab" class="outline-4">
-<h4 id="org08c8fab"><span class="section-number-4">2.1.2</span> 面向恶意代码黑盒检测的对抗攻击方法研究</h4>
+<div id="outline-container-org604f397" class="outline-4">
+<h4 id="org604f397"><span class="section-number-4">2.1.2</span> 面向恶意代码黑盒检测的对抗攻击方法研究</h4>
 <div class="outline-text-4" id="text-2-1-2">
 <p>
 在上述面向恶意代码对抗技术的PE文件动态行为一致改写方法研究的基础上，我们将针对黑盒场景下的恶意代码对抗攻击方法展开研究，当前的恶意代码黑盒对抗生成
@@ -541,8 +541,8 @@ Header字段，从而保障程序的程序功能完整性，本课题基于PE文
 </div>
 
 
-<div id="outline-container-org3c64c5e" class="outline-4">
-<h4 id="org3c64c5e"><span class="section-number-4">2.1.3</span> 面向对抗攻击的检测模型研究</h4>
+<div id="outline-container-orgaf8ba0b" class="outline-4">
+<h4 id="orgaf8ba0b"><span class="section-number-4">2.1.3</span> 面向对抗攻击的检测模型研究</h4>
 <div class="outline-text-4" id="text-2-1-3">
 <p>
 针对对抗攻击，本课题还将研究如何面向对抗攻击进行有效防御，特别地，针对常见面向深度学习的对抗攻击方法，我们将假设攻击者会在知道模型结构，网络参数
@@ -562,8 +562,8 @@ block级别的opcode序列进行文本重建，从而得到正常情况下的重
 </div>
 </div>
 
-<div id="outline-container-org7766540" class="outline-3">
-<h3 id="org7766540"><span class="section-number-3">2.2</span> 研究目标</h3>
+<div id="outline-container-orgb9b972f" class="outline-3">
+<h3 id="orgb9b972f"><span class="section-number-3">2.2</span> 研究目标</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 本课题的研究目标是研究一种面向恶意代码对抗技术的PE文件动态一致改写方法，研究面向恶意代码黑盒检测的对抗攻击方法，并针对白盒场景下的恶意代码对抗攻击提出
@@ -579,8 +579,8 @@ block级别的opcode序列进行文本重建，从而得到正常情况下的重
 </div>
 </div>
 
-<div id="outline-container-orgb8e1366" class="outline-3">
-<h3 id="orgb8e1366"><span class="section-number-3">2.3</span> 拟解决的关键科学问题</h3>
+<div id="outline-container-org9339436" class="outline-3">
+<h3 id="org9339436"><span class="section-number-3">2.3</span> 拟解决的关键科学问题</h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 随着网络技术的不断发展，恶意代码呈指数增长，基于机器学习的恶意代码检测方法在主流数据集上都取得了很好的表现，但同时深度模型的脆弱性也成为学界关注的重
@@ -603,12 +603,12 @@ block级别的opcode序列进行文本重建，从而得到正常情况下的重
 </div>
 
 
-<div id="outline-container-orgf076cd5" class="outline-2">
-<h2 id="orgf076cd5"><span class="section-number-2">3</span> 研究方案设计及可行性分析</h2>
+<div id="outline-container-org3c045a4" class="outline-2">
+<h2 id="org3c045a4"><span class="section-number-2">3</span> 研究方案设计及可行性分析</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-orge1ca61e" class="outline-3">
-<h3 id="orge1ca61e"><span class="section-number-3">3.1</span> 研究方法</h3>
+<div id="outline-container-org226961b" class="outline-3">
+<h3 id="org226961b"><span class="section-number-3">3.1</span> 研究方法</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 针对本课题的研究内容和特性, 为达到研究目的, 拟采用如下研究方法:
@@ -624,18 +624,18 @@ block级别的opcode序列进行文本重建，从而得到正常情况下的重
 </div>
 </div>
 
-<div id="outline-container-orgaf05554" class="outline-3">
-<h3 id="orgaf05554"><span class="section-number-3">3.2</span> 技术路线</h3>
+<div id="outline-container-org1c5da58" class="outline-3">
+<h3 id="org1c5da58"><span class="section-number-3">3.2</span> 技术路线</h3>
 <div class="outline-text-3" id="text-3-2">
 
-<div id="org079480d" class="figure">
+<div id="org6dd3b8d" class="figure">
 <p><img src="./ConditionalFGSM.png" alt="ConditionalFGSM.png" />
 </p>
 <p><span class="figure-number">&#22270;1&nbsp; </span>面向恶意代码黑盒检测的对抗攻击方法</p>
 </div>
 
 
-<div id="org7ef76e3" class="figure">
+<div id="org48b4e26" class="figure">
 <p><img src="./AdversarialDetection.png" alt="AdversarialDetection.png" />  
 </p>
 <p><span class="figure-number">&#22270;2&nbsp; </span>面向对抗攻击的检测模型研究</p>
@@ -643,12 +643,12 @@ block级别的opcode序列进行文本重建，从而得到正常情况下的重
 </div>
 </div>
 
-<div id="outline-container-org65bba93" class="outline-3">
-<h3 id="org65bba93"><span class="section-number-3">3.3</span> 技术方法</h3>
+<div id="outline-container-org6a79daf" class="outline-3">
+<h3 id="org6a79daf"><span class="section-number-3">3.3</span> 技术方法</h3>
 <div class="outline-text-3" id="text-3-3">
 </div>
-<div id="outline-container-org0405091" class="outline-4">
-<h4 id="org0405091"><span class="section-number-4">3.3.1</span> 面向恶意代码对抗技术的PE文件动态行为一致改写方法研究</h4>
+<div id="outline-container-org5b6fda6" class="outline-4">
+<h4 id="org5b6fda6"><span class="section-number-4">3.3.1</span> 面向恶意代码对抗技术的PE文件动态行为一致改写方法研究</h4>
 <div class="outline-text-4" id="text-3-3-1">
 <p>
 本课题基于PE文件研究动态一致性改写方法，分析PE程序结构，解析对应PE文件字段，解析不同字段中存在的可修改
@@ -662,11 +662,11 @@ block级别的opcode序列进行文本重建，从而得到正常情况下的重
 </div>
 
 
-<div id="outline-container-org9b591e4" class="outline-4">
-<h4 id="org9b591e4"><span class="section-number-4">3.3.2</span> 面向恶意代码黑盒检测的对抗攻击方法研究</h4>
+<div id="outline-container-orgdfe71d3" class="outline-4">
+<h4 id="orgdfe71d3"><span class="section-number-4">3.3.2</span> 面向恶意代码黑盒检测的对抗攻击方法研究</h4>
 <div class="outline-text-4" id="text-3-3-2">
 <p>
-如上图<a href="#org079480d">1</a>所示，我们假设在黑盒场景下对目标模型进行攻击，首先使用substitute model拟合目标模型，通过将样本输入Black-box得到概率分布，再将对应的概率
+如上图<a href="#org6dd3b8d">1</a>所示，我们假设在黑盒场景下对目标模型进行攻击，首先使用substitute model拟合目标模型，通过将样本输入Black-box得到概率分布，再将对应的概率
 分布迁移到Substitute detector中，进行梯度反馈，从而调整substitute model的对应参数，经过多次迭代学习，实现参数优化，完成黑盒模型的模拟过程，在
 对抗样本生成阶段，我们以Substitute detector作为我们的白盒模型进行梯度攻击，从而实现对抗样本的构造。
 </p>
@@ -674,11 +674,11 @@ block级别的opcode序列进行文本重建，从而得到正常情况下的重
 </div>
 
 
-<div id="outline-container-orgf01178e" class="outline-4">
-<h4 id="orgf01178e"><span class="section-number-4">3.3.3</span> 面向对抗攻击的检测模型研究</h4>
+<div id="outline-container-org04cb494" class="outline-4">
+<h4 id="org04cb494"><span class="section-number-4">3.3.3</span> 面向对抗攻击的检测模型研究</h4>
 <div class="outline-text-4" id="text-3-3-3">
 <p>
-如上图<a href="#org7ef76e3">2</a>所示，我们将恶意代码按ret，jmp，jne, je等条件转移或无条件转移指令划分为基础语句块(basic block)，作为VAE重构的基础单位，其中训练集中只
+如上图<a href="#org48b4e26">2</a>所示，我们将恶意代码按ret，jmp，jne, je等条件转移或无条件转移指令划分为基础语句块(basic block)，作为VAE重构的基础单位，其中训练集中只
 包含Benign Set，即良性训练集，我们将所有良性训练集中的恶意代码按基础语句块进行切割，只取opcode字段，丢弃operand字段，将基础语句块输入到Encoder模块，
 通过Decoder模块进行解码重建，在这个训练过程中，模型学到的Embedding Representation即Z会趋于拟合正常编写代码的opcode分布，而对于对抗攻击产生的异常
 opcode序列，由于这部分语句由对抗攻击产生，缺乏正常编写代码的opcode统计分布特征，从而在通过VAE重建时会产生较大的损失，当超过我们设定的阈值时，我们
@@ -691,8 +691,8 @@ opcode序列，由于这部分语句由对抗攻击产生，缺乏正常编写�
 
 
 
-<div id="outline-container-orga5e3adc" class="outline-3">
-<h3 id="orga5e3adc"><span class="section-number-3">3.4</span> 可行性分析</h3>
+<div id="outline-container-org89cd9a1" class="outline-3">
+<h3 id="org89cd9a1"><span class="section-number-3">3.4</span> 可行性分析</h3>
 <div class="outline-text-3" id="text-3-4">
 <p>
 本课题的可行性主要体现在以下两个方面:
@@ -708,8 +708,8 @@ opcode序列，由于这部分语句由对抗攻击产生，缺乏正常编写�
 </div>
 
 
-<div id="outline-container-org52f456e" class="outline-2">
-<h2 id="org52f456e"><span class="section-number-2">4</span> 本研究课题可能的创新之处</h2>
+<div id="outline-container-orgdf1ea7d" class="outline-2">
+<h2 id="orgdf1ea7d"><span class="section-number-2">4</span> 本研究课题可能的创新之处</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 随着网络技术的不断发展，恶意代码呈指数增长，基于机器学习的恶意代码检测方法在主流数据集上都取得了很好的表现，但同时深度模型的脆弱性也成为学界关注的重
@@ -729,12 +729,12 @@ opcode序列，由于这部分语句由对抗攻击产生，缺乏正常编写�
 </div>
 
 
-<div id="outline-container-org8ba92e0" class="outline-2">
-<h2 id="org8ba92e0"><span class="section-number-2">5</span> 研究基础与工作条件</h2>
+<div id="outline-container-orgeb8ce2b" class="outline-2">
+<h2 id="orgeb8ce2b"><span class="section-number-2">5</span> 研究基础与工作条件</h2>
 <div class="outline-text-2" id="text-5">
 </div>
-<div id="outline-container-org2140c64" class="outline-3">
-<h3 id="org2140c64"><span class="section-number-3">5.1</span> 与本课题相关的研究工作积累工作</h3>
+<div id="outline-container-org294aa00" class="outline-3">
+<h3 id="org294aa00"><span class="section-number-3">5.1</span> 与本课题相关的研究工作积累工作</h3>
 <div class="outline-text-3" id="text-5-1">
 <p>
 本人在课程学习方面、专业知识方面和选题准备方面有良好的知识积累，为课题的研究与实现打下了基础。
@@ -749,8 +749,8 @@ Opcode序列, API序列, ACFG图等多种恶意代码分类方法, 了解如何�
 </div>
 </div>
 
-<div id="outline-container-org9a546f0" class="outline-3">
-<h3 id="org9a546f0"><span class="section-number-3">5.2</span> 个人知识积累</h3>
+<div id="outline-container-orgbba3821" class="outline-3">
+<h3 id="orgbba3821"><span class="section-number-3">5.2</span> 个人知识积累</h3>
 <div class="outline-text-3" id="text-5-2">
 <p>
 本人通过查阅相关资料，对恶意代码检测的相关算法进行了学习，拥有一定恶意代码方面的知识积累。了解恶意代码的基本架构和运行流程，能运用
@@ -759,8 +759,8 @@ Opcode序列, API序列, ACFG图等多种恶意代码分类方法, 了解如何�
 </div>
 </div>
 
-<div id="outline-container-org3d18b55" class="outline-3">
-<h3 id="org3d18b55"><span class="section-number-3">5.3</span> 硬件设备</h3>
+<div id="outline-container-org6049eac" class="outline-3">
+<h3 id="org6049eac"><span class="section-number-3">5.3</span> 硬件设备</h3>
 <div class="outline-text-3" id="text-5-3">
 <p>
 实验室计算机性能优越, 算力充足, 具有GPU处理器, 高性能CPU, 可满足当前数据集下深度学习与优化的计算需求
@@ -768,8 +768,7 @@ Opcode序列, API序列, ACFG图等多种恶意代码分类方法, 了解如何�
 
 
 
-<style>.csl-left-margin{float: left; padding-right: 0em;} .csl-right-inline{margin: 0 0 0 2.4em;}</style><h2 class='citeproc-org-bib-h2'>Bibliography</h2>
-<div class="csl-bib-body">
+<style>.csl-left-margin{float: left; padding-right: 0em;} .csl-right-inline{margin: 0 0 0 2.4em;}</style><h2>参考文献</h2><div class="csl-bib-body">
   <div class="csl-entry"><a id="citeproc_bib_item_1"></a>
     <div class="csl-left-margin">[1]</div><div class="csl-right-inline">Fabrizio Cara, Michele Scalas, Giorgio Giacinto, and Davide Maiorca. 2020. On the Feasibility of Adversarial Sample Creation Using the Android System API. <i>Information</i> 11, 9 (September 2020), 433. DOI:<a href="https://doi.org/10.3390/info11090433">https://doi.org/10.3390/info11090433</a></div>
   </div>
@@ -839,7 +838,7 @@ Opcode序列, API序列, ACFG图等多种恶意代码分类方法, 了解如何�
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2021-12-13 Mon 16:06</p>
+<p class="date">Created: 2021-12-13 Mon 15:49</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
